@@ -9,11 +9,11 @@ let style = {
 
 
 
-function PageTitle()
+function PageTitle(props)
 {
    return(
      <div class="title-container" style={style}>
-       <span class="page-title" id="title">Study Knights</span>
+       <span class="page-title" id="title">{props.text}</span>
      </div>
      
    );

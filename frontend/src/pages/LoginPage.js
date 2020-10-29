@@ -9,7 +9,7 @@ const LoginPage = () =>
 
     return(
       <div class="login-page" >
-        <PageTitle />
+        <PageTitle text="Study Knights" />
         <Login />
       </div>
 
