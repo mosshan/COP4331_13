@@ -1,0 +1,15 @@
+.page-title {
+    font-size: 60PX;
+    font-variant: small-caps;
+    padding: 5px;
+    color: black;
+    font-family: 'Lucida Sans Unicode';
+    font-weight: lighter;
+    align-self: center;
+
+}
+
+.title-container {
+    display: flex;
+    justify-content: center;
+}
