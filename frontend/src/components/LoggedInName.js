@@ -1,4 +1,5 @@
 import React from 'react';
+import './CSS/title.css';
 
 function LoggedInName()
 {
@@ -13,9 +14,9 @@ function LoggedInName()
     };    
 
     return(
-      <div id="loggedInDiv">
-        <span id="userName">Logged In As John Doe </span><br />
-        <button type="button" id="logoutButton" class="buttons" 
+      <div id="loggedInDiv" class="logout-container">
+        <span id="userName" class="logout-name">John Doe</span>
+        <button type="button" id="logoutButton" class="logout-button" 
            onClick={doLogout}> Log Out </button>
       </div>
     );

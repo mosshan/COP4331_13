@@ -1,4 +1,6 @@
 import React from 'react';
+import LoggedInName from './LoggedInName';
+
 import './CSS/title.css';
 
 
@@ -12,10 +14,12 @@ let style = {
 function PageTitle(props)
 {
    return(
-     <div class="title-container" style={style}>
-       <span class="page-title" id="title">{props.text}</span>
-     </div>
-     
+     <div class="navbar" style={style}>
+      <div class="title-container" >
+        <div class="page-title" id="title">{props.text}</div>
+      </div>
+      <LoggedInName />
+    </div>
    );
 };
 

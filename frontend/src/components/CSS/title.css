@@ -1,15 +1,57 @@
 .page-title {
     font-size: 60PX;
     font-variant: small-caps;
-    padding: 5px;
     color: black;
     font-family: 'Lucida Sans Unicode';
     font-weight: lighter;
-    align-self: center;
-
+    text-align: center;
+    width: 20vw;
+    padding-left: 40vw;
 }
 
 .title-container {
+    flex-direction: row;
+    flex-basis: auto;
+    width: 60vw;
+}
+
+.navbar {
     display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: center;
+    
+}
+
+.logout-container {
+    padding: 10px;
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    flex-basis: auto;
+    flex-grow: 2;
+    flex-shrink: 2;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.logout-button {
+    background-color:rgb(163, 163, 163);
+    border-radius: 5px;
+    border-width: 1px;
+    font-family: 'Lucida Sans Unicode';
+    font-variant: small-caps;
+    font-size: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-style: solid;
+    border-color: black;
+}
+
+.logout-name {
+    font-family: 'Lucida Sans Unicode';
+    font-variant: small-caps;
+    font-size: 20px;
+    margin-right: 20px;
+    color: black;
 }

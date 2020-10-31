@@ -8,8 +8,7 @@ const CardPage = () =>
 {
     return(
         <div>
-            <PageTitle text="Home"/>
-            <LoggedInName />
+            <PageTitle text="Cards"/>
             <CardUI />
         </div>
     );
