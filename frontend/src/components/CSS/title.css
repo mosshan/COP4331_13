@@ -5,8 +5,7 @@
     font-family: 'Lucida Sans Unicode';
     font-weight: lighter;
     text-align: center;
-    width: 20vw;
-    padding-left: 40vw;
+    width: 60vw;
 }
 
 .title-container {
@@ -20,17 +19,15 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    
+    min-height: 10vh;
 }
 
 .logout-container {
-    padding: 10px;
     align-self: center;
     display: flex;
     flex-direction: row;
     flex-basis: auto;
-    flex-grow: 2;
-    flex-shrink: 2;
+    width: 20vw;
     justify-content: flex-end;
     align-items: center;
 }
@@ -46,12 +43,17 @@
     padding-right: 15px;
     border-style: solid;
     border-color: black;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .logout-name {
     font-family: 'Lucida Sans Unicode';
     font-variant: small-caps;
     font-size: 20px;
-    margin-right: 20px;
     color: black;
+}
+
+.back-button-container {
+    width: 20vw;
 }

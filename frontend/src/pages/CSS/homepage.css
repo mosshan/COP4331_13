@@ -1,8 +1,11 @@
 .home-page {
-    height: 100vh;
-    width:  100vw;
+    min-height: 100vh;
+    min-width:  100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: black;
+    background-image: linear-gradient(to left, rgb(2, 2, 2, .75) 8%, transparent), linear-gradient(to top, rgba(2, 2, 2, .75) 2%, transparent), url("../../images/ucfLibrary.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }

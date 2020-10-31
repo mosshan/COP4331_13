@@ -5,15 +5,23 @@ import Map from '../components/Map';
 import './CSS/homepage.css';
 import '../components/CSS/map.css';
 
-const HomePage = () =>
+// let props = 
+// [
+//     locationName,
+//     id?
+//     spots[] <-- list of spots within location
+// ]
+
+
+const LocationPage = (props) =>
 {
     return(
         <div class="home-page">
-            <PageTitle text="Home" map={true}/>
-            <Map />
+            <PageTitle text={props.name} />
+            
 
         </div>
     );
 }
 
-export default HomePage;
+export default LocationPage;
