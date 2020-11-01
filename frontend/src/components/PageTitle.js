@@ -7,8 +7,23 @@ import './CSS/title.css';
 let style = {
   background: "#FFC904",
   width: "100vw",
-}
+};
 
+function setLoginButton(props)
+{
+  if (props.loggedIn)
+  {
+    return (<LoggedInName />);
+  }
+  else if (props.loginPage)
+  {
+    return (<button onClick={() => window.location.href = '/signup'} class="logout-button">Sign Up</button>);
+  }
+  else
+  {
+    return (<button onClick={() => window.location.href = '/login'} class="logout-button">Login</button>);
+  }
+}
 
 
 function PageTitle(props)
@@ -24,7 +39,10 @@ function PageTitle(props)
       <div class="title-container" >
         <div class="page-title" id="title">{props.text}</div>
       </div>
-      <LoggedInName />
+      <div class="logout-container">
+        {setLoginButton(props)}
+      </div> 
+      
     </div>
    );
 };

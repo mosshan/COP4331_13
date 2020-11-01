@@ -22,7 +22,99 @@ var MAP = {
     {
 		name: "Health and Public Affairs 2",
 		coords: [1170,307,1235,307,1235,342,1170,342],
-	}
+	},
+	{
+		name: "Psychology",
+		coords: [933,138,985,138,985,173,933,173],
+	},
+	{
+		name: "CSEL",
+		coords: [1021,81,1071,81,1071,117,1021,117],
+	},
+	{
+		name: "Alumni Center",
+		coords: [1064,16,1124,16,1124,52,1064,52],
+	},
+	{
+		name: "Engineering 1",
+		coords: [1056,614,1115,614,1115,650,1056,650],
+	},
+	{
+		name: "Engineering 2",
+		coords: [1129,558,1198,558,1198,594,1129,594],
+	},
+	{
+		name: "CREOL",
+		coords: [1324,590,1390,590,1390,626,1324,626],
+	},
+	{
+		name: "Harris Engineering Center",
+		coords: [1229,679,1282,679,1282,715,1229,715],
+	},
+	{
+		name: "Business Administration 1",
+		coords: [992,641,1037,641,1037,678,992,678],
+	},
+	{
+		name: "Business Administration 2",
+		coords: [1106,686,1160,686,1160,724,1106,724],
+	},
+	{
+		name: "Student Union",
+		coords: [859,533,923,533,923,570,859,570],
+	},
+	{
+		name: "College of Sciences",
+		coords: [911,669,960,669,960,705,911,705],
+	},
+	{
+		name: "Tech Commons 1",
+		coords: [930,782,976,782,976,821,930,821],
+	},
+	{
+		name: "Tech Commons 2",
+		coords: [853,720,900,720,900,757,853,757],
+	},
+	{
+		name: "Math and Science",
+		coords: [825,830,879,830,879,867,825,867],
+	},
+	{
+		name: "Chemistry",
+		coords: [942,840,1011,840,1011,878,942,878],
+	},
+	{
+		name: "Theatre",
+		coords: [1003,734,1043,734,1043,772,1003,772],
+	},
+	{
+		name: "Biology",
+		coords: [1098,763,1142,763,1142,801,1098,801],
+	},
+	{
+		name: "Arboretum",
+		coords: [1448,727,1499,727,1499,763,1448,763],
+	},
+	{
+		name: "Health Center",
+		coords: [1047,873,1088,873,1088,909,1047,909],
+	},
+	{
+		name: "Pschological Services",
+		coords: [1109,866,1169,866,1169,902,1109,902],
+	},
+	{
+		name: "Physical Sciences",
+		coords: [1213,837,1260,837,1260,874,1213,874],
+	},
+	{
+		name: "Libra Community Center",
+		coords: [1066,952,1111,952,1111,988,1066,988],
+	},
+	{
+		name: "Ferrell Commons",
+		coords: [989,1055,1021,1055,1021,1092,989,1092],
+	},
 	]
 };
 
