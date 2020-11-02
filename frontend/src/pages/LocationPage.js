@@ -2,6 +2,7 @@ import React from 'react';
 
 import PageTitle from '../components/PageTitle';
 import Spot from '../components/SpotElement';
+import '../components/CSS/spots.css';
 import Map from '../components/Map';
 import './CSS/homepage.css';
 import '../components/CSS/map.css';
@@ -31,8 +32,15 @@ const LocationPage = (props) =>
     return(
         <div class="home-page">
             <PageTitle text={props.name} />
-            {f(props)}
-
+            <ul class="spot-container">
+                <h2 class="spot-inner-title">Study Spots</h2>
+                {/* {f(props)} */}
+                <Spot rating="4" name="Atrium" />
+                <Spot rating="4" name="Atrium" />
+                <Spot rating="4" name="Atrium" />
+                <Spot rating="4" name="Atrium" />
+                <Spot rating="4" name="Atrium" />
+            </ul>
         </div>
     );
 }

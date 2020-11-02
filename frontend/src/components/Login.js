@@ -63,8 +63,9 @@ function Login()
             <input type="text" class="login-input" id="loginName" placeholder="Username"  ref={(c) => loginName = c} /><br />
             <input type="password" class="login-input" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c}  /><br />
             <input type="submit" id="loginButton" class="login-button" value = "Go" onClick={doLogin} />
+            <span id="loginResult" class="login-result">{message}</span>
         </form>
-    <span id="loginResult">{message}</span>
+    
      </div>
     );
 };

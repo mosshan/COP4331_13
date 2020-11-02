@@ -115,6 +115,58 @@ var MAP = {
 		name: "Ferrell Commons",
 		coords: [989,1055,1021,1055,1021,1092,989,1092],
 	},
+	{
+		name: "John T. Washington Center",
+		coords: [727,663,794,663,794,700,727,700],
+	},
+	{
+		name: "Library",
+		coords: [663,775,708,775,708,812,663,812],
+	},
+	{
+		name: "Burnett Honors College",
+		coords: [688,504,739,504,739,541,688,541],
+	},
+	{
+		name: "Rehearsal Hall",
+		coords: [678,600,721,600,721,636,678,636],
+	},
+	{
+		name: "Howard Phillips Hall",
+		coords: [543,788,598,788,598,824,543,824],
+	},
+	{
+		name: "Millican Hall",
+		coords: [596,925,639,925,639,962,596,962],
+	},
+	{
+		name: "Trevor Colbourn Hall",
+		coords: [494,654,549,654,549,691,494,691],
+	},
+	{
+		name: "Teaching Academy",
+		coords: [365,930,401,930,401,967,365,967],
+	},
+	{
+		name: "Education Department",
+		coords: [373,779,411,779,411,816,373,816],
+	},
+	{
+		name: "Performing Arts Center",
+		coords: [244,533,287,533,287,571,244,571],
+	},
+	{
+		name: "Visual Arts Building",
+		coords: [471,413,524,413,524,451,471,451],
+	},
+	{
+		name: "Nicholson School of Communication",
+		coords: [451,268,504,268,504,303,451,303],
+	},
+	{
+		name: "Arts and Humanities",
+		coords: [579,213,631,213,631,250,579,250],
+	},
 	]
 };
 

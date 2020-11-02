@@ -1,5 +1,5 @@
 .page-title {
-    font-size: 60PX;
+    font-size: 55PX;
     font-variant: small-caps;
     color: black;
     font-family: 'Lucida Sans Unicode';
@@ -45,6 +45,7 @@
     border-color: black;
     margin-left: 20px;
     margin-right: 20px;
+    cursor: pointer;
 }
 
 .logout-name {

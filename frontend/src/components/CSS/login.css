@@ -1,7 +1,8 @@
 .login-div {
-    width: auto;
-    height: 40vh;
+    width: 20vw;
+    height: 55vh;
     min-height: fit-content;
+    min-width: fit-content;
     
     display: flex;
     flex-direction: column;  
@@ -37,6 +38,7 @@
 }
 
 .login-button {
+    width: 150px;
     background-color: #FFC904;
     border-radius: 12px;
     border-width: 5px;
@@ -48,12 +50,25 @@
     padding-right: 15px;
     border-style: solid;
     border-color: black;
+    cursor: pointer;
+    align-self: center;
 }
 
 .inner-title {
     font-size: 40px;
     color: black;
     margin: 10px;
+    margin-top: 25px;
     font-family: 'Lucida Sans Unicode';
     font-variant: small-caps;
+}
+
+.login-result {
+    background-color: darkred;
+    color: white;
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-right: 3px;
+    padding-left: 3px;
 }

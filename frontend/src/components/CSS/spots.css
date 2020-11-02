@@ -1,0 +1,54 @@
+.spot-container {
+    background-color: violet;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    padding-right: 20px;
+    margin-top: 20px;
+    min-height: 50vh;
+    min-width: 25vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    border-color: #FFC904;
+    border-style: solid;
+    border-width: 20px;
+    border-radius: 10px;
+    border-style: ridge;
+
+    background-color: grey;
+}
+
+.spot-inner-title {
+    font-size: 40px;
+    color: black;
+    margin:5px;
+    font-family: 'Lucida Sans Unicode';
+    font-variant: small-caps;
+    align-self: center;
+}
+
+.spot-item {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    border-radius: 5px;
+    border-style: inset;
+    background-color: #ffdf6b;
+    border-radius: 12px;
+    border-width: 5px;
+    font-family: 'Lucida Sans Unicode';
+    cursor: pointer;
+}
+
+.spot-name {
+    font-size: 30px;
+    color: grey;
+}
+
+.spot-rating {
+    font-size: 15px;
+    color: black;
+}
