@@ -9,7 +9,6 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-
 app.set('port', (process.env.PORT || 5000));
 
 const MongoClient = require('mongodb').MongoClient;
@@ -25,12 +24,12 @@ app.post('/api/login', async (req, res, next) =>
   // incoming: login, password
   // outgoing: id, firstName, lastName, error
 
-  var error = '';
+ var error = '';
 
   const { login, password } = req.body;
 
   const db = client.db();
-  const results = await db.collection('Users').find({Login:login,Password:password}).toArray();
+  const results = await db.collection('Users').find({username:login,password:password}).toArray();
 
   var id = -1;
   var fn = '';
@@ -38,12 +37,10 @@ app.post('/api/login', async (req, res, next) =>
 
   if( results.length > 0 )
   {
-    id = results[0].UserId;
+    id = results[0].user_id;
     fn = results[0].FirstName;
     ln = results[0].LastName;
   }
-
-  console.log(ret);
 
   var ret = { id:id, firstName:fn, lastName:ln, error:''};
   res.status(200).json(ret);
@@ -121,7 +118,7 @@ app.use((req, res, next) =>
 if (process.env.NODE_ENV === 'production') 
 {
   // Set static folder
-  app.use(express.static(path.join(__dirname,'frontend','build')));
+  app.use(express.static('frontend/build'));
 
   app.get('*', (req, res) => 
  {
@@ -129,11 +126,9 @@ if (process.env.NODE_ENV === 'production')
   });
 }
 
-
 // app.listen(5000); // start Node + Express server on port 5000
 
 app.listen(PORT, () => 
 {
   console.log(`Server listening on port ${PORT}.`);
 });
-
