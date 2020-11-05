@@ -24,12 +24,16 @@ app.post('/api/login', async (req, res, next) =>
   // incoming: login, password
   // outgoing: id, firstName, lastName, error
 
+  console.log(req.body);
+
  var error = '';
 
   const { login, password } = req.body;
 
   const db = client.db();
   const results = await db.collection('Users').find({username:login,password:password}).toArray();
+
+  console.log(results);
 
   var id = -1;
   var fn = '';

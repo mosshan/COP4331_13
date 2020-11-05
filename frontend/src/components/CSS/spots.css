@@ -41,6 +41,7 @@
     border-width: 5px;
     font-family: 'Lucida Sans Unicode';
     cursor: pointer;
+    width: 100%;
 }
 
 .spot-name {
