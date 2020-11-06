@@ -42,11 +42,11 @@ app.post('/api/login', async (req, res, next) =>
   if( results.length > 0 )
   {
     id = results[0].user_id;
-    fn = results[0].FirstName;
-    ln = results[0].LastName;
+    username = results[0].username;
+    // ln = results[0].LastName;
   }
 
-  var ret = { id:id, firstName:fn, lastName:ln, error:''};
+  var ret = { id:id, userName: username, error:''};
   res.status(200).json(ret);
 });
 

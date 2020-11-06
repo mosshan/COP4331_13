@@ -42,10 +42,9 @@ function Login()
             }
             else
             {
-                var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
+                var user = {userName:res.userName,id:res.id}
                 localStorage.setItem('user', JSON.stringify(user));
-                localStorage.setItem('user_id', res.id);
-
+                
                 setMessage('');
                 window.location.href = '/';
             }

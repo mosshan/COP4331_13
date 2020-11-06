@@ -11,8 +11,15 @@ let style = {
 
 function setLoginButton(props)
 {
-  // if (JSON.parse(localStorage.user).id > 0)
-  if (true)
+  let id;
+  try {
+    id = JSON.parse(localStorage.user).id;
+  }
+  catch(e)
+  {
+    id = 0;
+  }
+  if (id > 0)
   {
     return (<LoggedInName />);
   }
