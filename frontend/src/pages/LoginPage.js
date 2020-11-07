@@ -8,7 +8,7 @@ const LoginPage = () =>
 {
 
     return(
-      <div class="login-page" >
+      <div className="login-page" >
         <PageTitle text="Study Knights" loginPage={true}/>
         <Login />
       </div>

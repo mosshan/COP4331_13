@@ -58,12 +58,12 @@ function Login()
 
     return(
       <div id="loginDiv">
-        <form onSubmit={doLogin} class="login-div">
-            <span id="inner-title" class="inner-title">Login</span>
-            <input type="text" class="login-input" id="loginName" placeholder="Username"  ref={(c) => loginName = c} /><br />
-            <input type="password" class="login-input" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c}  /><br />
-            <input type="submit" id="loginButton" class="login-button" value = "Go" onClick={doLogin} />
-            <span id="loginResult" class="login-result">{message}</span>
+        <form onSubmit={doLogin} className="login-div">
+            <span id="inner-title" className="inner-title">Login</span>
+            <input type="text" className="login-input" id="loginName" placeholder="Username"  ref={(c) => loginName = c} /><br />
+            <input type="password" className="login-input" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c}  /><br />
+            <input type="submit" id="loginButton" className="login-button" value = "Go" onClick={doLogin} />
+            <span id="loginResult" className="login-result">{message}</span>
         </form>
     
      </div>

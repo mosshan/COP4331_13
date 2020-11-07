@@ -90,7 +90,7 @@ function CardUI()
         <br />
         <input type="text" id="searchText" placeholder="Card To Search For" 
           ref={(c) => search = c} />
-        <button type="button" id="searchCardButton" class="buttons" 
+        <button type="button" id="searchCardButton" className="buttons" 
           onClick={searchCard}> Search Card</button><br />
         <span id="cardSearchResult">{searchResults}</span>
         <p id="cardList">{cardList}</p><br /><br />

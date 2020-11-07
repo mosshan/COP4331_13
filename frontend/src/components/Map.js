@@ -255,7 +255,7 @@ class Map extends React.Component
 	render() {
 
 		return (
-            <div class="map-style">
+            <div className="map-style">
                 <div className="grid">
                     <div className="presenter">
                         <div style={{ position: "relative" }}>

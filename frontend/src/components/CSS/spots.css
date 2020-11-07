@@ -39,16 +39,44 @@
     border-radius: 12px;
     border-width: 5px;
     font-family: 'Lucida Sans Unicode';
-    cursor: pointer;
-    width: 100%;
+    width: 90%;
 }
 
 .spot-name {
     font-size: 30px;
-    color: grey;
+    color: black;
 }
 
 .spot-rating {
     font-size: 15px;
     color: black;
+}
+
+.rating-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.rating-stars {
+    width: 40%;
+    justify-self: center;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.rating-button {
+    background-color:rgb(163, 163, 163);
+    border-radius: 5px;
+    border-width: 1px;
+    font-family: 'Lucida Sans Unicode';
+    font-variant: small-caps;
+    font-size: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-style: solid;
+    border-color: black;
+    cursor: pointer;
 }

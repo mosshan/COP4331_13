@@ -8,7 +8,7 @@ import '../components/CSS/map.css';
 const HomePage = () =>
 {
     return(
-        <div class="home-page">
+        <div className="home-page">
             <PageTitle text="Home" map={true}/>
             <Map />
 

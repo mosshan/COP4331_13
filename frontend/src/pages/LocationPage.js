@@ -21,6 +21,7 @@ function f(props)
     {
         return (<h1>No Study Spots Available</h1>);
     }
+    // map
     props.spots.forEach(element => {
         spotList += <Spot rating={element.rating} name={element.name}/>
     });
@@ -31,10 +32,10 @@ function f(props)
 const LocationPage = (props) =>
 {
     return(
-        <div class="home-page">
+        <div className="home-page">
             <PageTitle text={props.name} />
-            <ul class="spot-container">
-                <h2 class="spot-inner-title">Study Spots</h2>
+            <ul className="spot-container">
+                <h2 className="spot-inner-title">Study Spots</h2>
                 {/* {f(props)} */}
                 <Spot rating="1" name="Spot 1" />
                 <Spot rating="2" name="Spot 2" />

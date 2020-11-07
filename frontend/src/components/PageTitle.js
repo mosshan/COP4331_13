@@ -37,17 +37,17 @@ function setLoginButton(props)
 function PageTitle(props)
 {
    return(
-     <div class="navbar" style={style}>
-       <div class="back-button-container">
+     <div className="navbar" style={style}>
+       <div className="back-button-container">
         {!props.map ? 
-            <button onClick={() => window.location.href = '/'} class="logout-button">To Map</button>
+            <button onClick={() => window.location.href = '/'} className="logout-button">To Map</button>
             : <div/>
         }
       </div> 
-      <div class="title-container" >
-        <div class="page-title" id="title">{props.text}</div>
+      <div className="title-container" >
+        <div className="page-title" id="title">{props.text}</div>
       </div>
-      <div class="logout-container">
+      <div className="logout-container">
         {setLoginButton(props)}
       </div> 
       
