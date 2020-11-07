@@ -1,26 +1,45 @@
 import React from 'react';
-import { render } from 'react-dom';
 import './CSS/spots.css';
-import Popup from './RatingPopup';
+import Rating from '@material-ui/lab/Rating';
 
-function Spot(props)
+
+class Spot extends React.Component
 {
-   const [isOpen, setIsOpen] = React.useState(false);
-   const togglePopup = () => {
-      setIsOpen(!isOpen);
-   }
+   constructor(props) {
+      super(props);
+      this.state = {
+         value:props.rating,
+         name: props.name
+      };
+    }
 
-   return(
-      <div >
-         <button class="spot-item" onClick={togglePopup}>
-            <text class="spot-name">{props.name}</text>
-            <text class="spot-rating">Average Rating: {props.rating}</text>
-         </button>
-         {isOpen && <Popup name={props.name} rating={props.rating} handleClose={togglePopup} />}
-         
+   // const [value, setValue] = React.useState(props.rating);
+   // const [isOpen, setIsOpen] = React.useState(false);
+   // const togglePopup = () => {
+   //    setIsOpen(!isOpen);
+   // }
+
+   render() {
+      return(
+         <div >
+            <button class="spot-item" >
+               <text class="spot-name">{this.state.name}</text>
+               <Rating
+                  value={this.state.value}
+                  onChange={(event, newValue) => {
+                     this.setState({value: newValue});
+                  }}
+                  precision={0.5}
+               />
+               {/* {this.state.rating} */}
+            </button>
+            {/* {isOpen && <Popup name={props.name} rating={props.rating} handleClose={togglePopup} />} */}
+            {/* <Popup name={props.name} rating={props.rating} handleClose={togglePopup} /> */}
+            
+         </div>
+      );
       
-      </div>
-   );
+   }
 };
 
 export default Spot;

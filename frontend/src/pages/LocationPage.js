@@ -27,6 +27,7 @@ function f(props)
     return spotList;
 }
 
+
 const LocationPage = (props) =>
 {
     return(
@@ -35,11 +36,11 @@ const LocationPage = (props) =>
             <ul class="spot-container">
                 <h2 class="spot-inner-title">Study Spots</h2>
                 {/* {f(props)} */}
-                <Spot rating="4" name="Atrium" />
-                <Spot rating="4" name="Atrium" />
-                <Spot rating="4" name="Atrium" />
-                <Spot rating="4" name="Atrium" />
-                <Spot rating="4" name="Atrium" />
+                <Spot rating="1" name="Spot 1" />
+                <Spot rating="2" name="Spot 2" />
+                <Spot rating="3" name="Spot 3" />
+                <Spot rating="4" name="Spot 4" />
+                <Spot rating="5" name="Spot 5" />
             </ul>
         </div>
     );
