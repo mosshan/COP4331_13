@@ -19,6 +19,10 @@ const url = process.env.MONGODB_URI;
 const client = new MongoClient(url);
 client.connect();
 
+var api = require('./api.js');
+api.setApp( app, client );
+
+/*
 app.post('/api/login', async (req, res, next) => 
 {
   // incoming: login, password
@@ -99,6 +103,7 @@ app.post('/api/searchcards', async (req, res, next) =>
   var ret = {results:_ret, error:error};
   res.status(200).json(ret);
 });
+*/
 
 app.use((req, res, next) => 
 {
