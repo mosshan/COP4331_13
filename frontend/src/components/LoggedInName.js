@@ -3,19 +3,26 @@ import './CSS/title.css';
 
 function LoggedInName()
 {
-  let userName = "";
+  let firstName = "";
+  let lastName = "";
   let user;
+  let username = "";
 
   const f = function() {
     
     try {
       user = JSON.parse(localStorage.user);
-      userName = user.userName;
+      firstName = user.firstName;
+      lastName = user.lastName;
+      username = user.username;
+      console.log(user);
     }
     catch(e)
     {
       user = {
-        userName:"",
+        username: "",
+        firstName: "",
+        lastName: "",
         id:0
       }
     }
@@ -30,6 +37,7 @@ function LoggedInName()
         {
           firstName:"",
           lastName:"",
+          username: "",
           id:0
         }
       );
@@ -40,7 +48,7 @@ function LoggedInName()
 
     return(
       <div id="loggedInDiv" className="logout-container">
-        <span id="userName" className="logout-name">{userName}</span>
+        <span id="userName" className="logout-name">{username}</span>
         <button type="button" id="logoutButton" className="logout-button" 
            onClick={doLogout}> Log Out </button>
       </div>

@@ -43,19 +43,23 @@ exports.setApp = function ( app, client )
         const results = await db.collection('Users').find({username:login,password:password}).toArray();
 
         console.log(results);
+        console.log(results.length);
 
         var id = -1;
         var fn = '';
         var ln = '';
+        var username = '';
 
         if( results.length > 0 )
         {
-            id = results[0].u_id;
+            id = results[0].user_id;
             fn = results[0].FirstName;
             ln = results[0].LastName;
+            username = results[0].username
         }
 
-        var ret = { id:id, FirstName: fn, LastName: ln, error:''};
+        var ret = { id:id, firstName: fn, lastName: ln, username:username, error:''};
+        console.log(ret);
         res.status(200).json(ret);
     });
     

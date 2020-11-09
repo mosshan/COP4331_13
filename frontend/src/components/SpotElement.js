@@ -69,6 +69,7 @@ class Spot extends React.Component
                      onChange={(event, newValue) => {
                         this.setState({value: newValue});
                         console.log('hello world value of ' + this.state.name + ' is now ' + newValue);
+                        // Increment number of ratings and disable stars
                      }}
                      precision={0.5}
                      disabled={setDisabled()}

@@ -35,16 +35,16 @@ function Login()
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
 
             var res = JSON.parse(await response.text());
-
+            console.log(res);
             if( res.id <= 0 )
             {
                 setMessage('User/Password combination incorrect');
             }
             else
             {
-                var user = {userName:res.userName,id:res.id}
+                var user = {id:res.id, username:res.username, firstName:res.firstName, lastName:res.lastName}
                 localStorage.setItem('user', JSON.stringify(user));
-                
+                console.log(user);
                 setMessage('');
                 window.location.href = '/';
             }
