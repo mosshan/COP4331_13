@@ -1,13 +1,12 @@
-
 // App.js
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet} from 'react-native';
 import { createStackNavigator} from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
 import SignUpScreen from './src/pages/SignUpScreen';
 import LoginScreen from './src/pages/LoginScreen';
-import HomeScreen from './src/pages/HomeScreen';
+import MapScreen from './src/pages/MapScreen';
 
 export default class App extends React.Component {
   render() {
@@ -24,7 +23,7 @@ const Stack = createStackNavigator();
 function MyStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Map" component={MapScreen} />
       <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
     </Stack.Navigator>
