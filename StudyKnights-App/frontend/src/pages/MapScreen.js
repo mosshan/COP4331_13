@@ -1,14 +1,18 @@
 // Mapscreen.js	
 import React, { Component } from 'react';	
-import {View, StyleSheet, Text , Dimensions, Image} from 'react-native';	
+import {View, StyleSheet, Text , Dimensions, Image, TouchableOpacity} from 'react-native';	
 import MapView, {Callout, Marker}  from "react-native-maps";	
+import '../components/StudySpots';
 
 export default class Map extends Component {	
 
-  state = {	
-    showRating: false,	
+  state = {
+    mapHeight: Dimensions.get('window').height - 150,
+    chosenMarker: -1,
     markers: [	
       {	
+        key: 1,
+        showRate:false,
         coordinate: {	
           latitude: 28.601957,	
           longitude: -81.200429,	
@@ -16,6 +20,8 @@ export default class Map extends Component {
         title: "Student Union",	
       },	
       {	
+        key: 2,
+        showRate:false,
         coordinate: {	
           latitude: 28.601514,	
           longitude: -81.198803,	
@@ -30,20 +36,40 @@ export default class Map extends Component {
       longitudeDelta: 0.007,	
     },	
   };	
+	
 
-  toggleStatus(marker){	
-    this.setState({	
-      showRating:true	
-    });	
-    alert('toggle button handler: '+ this.state.showRating);	
-  };	
+  showRating(index)
+  {
+    //call API to return all study Spots
+    this.setState({
+      chosenMarker: index,
+      mapHeight: Dimensions.get('window').height - 300,
+    });
+    alert("chosen index is" + index);
+  }
+
+  closeRating()
+  {
+    //call API to return all study Spots
+    this.setState({
+      chosenMarker: -1,
+      mapHeight: Dimensions.get('window').height - 150,
+    });
+    alert("chosen index is neg one");
+  }
+
+
 
   render() {	
-    return (	
+    return (
+      <View style={styles.container}>
         <MapView	
           ref={map => this.map = map}	
           initialRegion={this.state.region}	
-          style={styles.mapStyle}	
+          style={{
+            height: this.state.mapHeight,
+            width: Dimensions.get('window').width,
+          }}
           mapType='satellite'	
           maxZoomLevel={20}
           minZoomLevel={16}
@@ -51,7 +77,7 @@ export default class Map extends Component {
           {this.state.markers.map((marker, index) => {	
             return (	
                  <Marker key={index} coordinate={marker.coordinate} title={marker.title}	
-                  description={marker.description} onPress={() => {this.toggleStatus()}} >	
+                  description={marker.description} onPress={() => {this.showRating(index)}} >	
                   <Callout	
                       tooltip={true}	
                     >	
@@ -60,39 +86,89 @@ export default class Map extends Component {
                       </Text>	
                   </Callout>	
               </Marker>	
+
             );	
           })}	
-          {this.state.showRating &&	
-          <Text style={styles.description} >	
-              lol	
-          </Text>	
-          }	
         </MapView>	
+
+        {this.state.chosenMarker > -1?
+          [
+            <View style = {styles.ratingContainer}>
+              <View style = {styles.button}>
+                <TouchableOpacity
+                  onPress={() => {this.closeRating()}}>
+                  <Text>  x  </Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <Text style={styles.description}>  {this.state.markers[this.state.chosenMarker].title} Study Spots</Text>
+              </View>
+            </View>
+
+          ]
+        : 
+        [
+          <View style={styles.noneChosenContainer}>
+              <TouchableOpacity
+                onPress={() => {this.props.navigation.navigate('Login')}}>
+                <Text style = {styles.button}>
+                  Login
+                </Text>
+              </TouchableOpacity>
+
+              <Text>   </Text>
+              <TouchableOpacity
+                onPress={() => {this.props.navigation.navigate('SignUp')}}>
+                <Text style = {styles.button}>
+                  Register
+                </Text>
+              </TouchableOpacity>
+              <Text>   </Text>
+              <Text style={styles.noneChosen} >Click on a Pin to View Study Spots</Text> 
+          </View>
+        ]}	
+
+      </View>
+ 
+
+
     );	
   }	
 };	
 
+
 const styles = StyleSheet.create({	
-  mapStyle: {	
-    flex: 1,	
-    flexDirection: 'column-reverse',	
-    height: Dimensions.get('window').height,	
-    width: Dimensions.get('window').width,	
-  },	
+  container: {
+    flex: 1,
+    backgroundColor: 'rgba(52, 52, 52, 1.0)',
+  },
+  ratingContainer:
+  {
+    flexDirection:'row',
+  },
   description: {	
-    //margin: 15,	
-    fontSize: 15,	
+    alignSelf:'center',
+    fontSize: 12,	
     fontFamily: 'monospace',	
     padding: 5,	
-    color: 'white',	
-    backgroundColor: 'rgba(52, 52, 52, 1.0)'	
+    color: 'white',
   },	
-  rating: {	
-    //margin: 15,	
-    fontSize: 15,	
-    fontFamily: 'monospace',	
-    padding: 5,	
-    color: 'white',	
-    backgroundColor: 'rgba(52, 52, 52, 1.0)'	
-  },	
+  noneChosenContainer: {
+    flexDirection:'row',
+    padding: 10,
+  },
+  noneChosen: {
+    flexShrink: 1,
+    fontSize: 12,	
+    fontFamily: 'monospace',
+    color: 'white',
+  },
+  button: {
+    fontFamily: 'monospace',
+    textAlign: "center",
+    fontSize: 12,
+    padding: 3,
+    fontWeight: "bold",
+    backgroundColor: 'rgba(255, 201, 4, .9)'
+  }
 });
