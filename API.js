@@ -2,27 +2,37 @@
 exports.setApp = function ( app, client )
 {
 
-    app.post('/api/addcard', async (req, res, next) =>
+    app.post('/api/register', async (req, res, next) =>
     {
-      // incoming: userId, color
+      // incoming: userName, Password, Email, FirstName, LastName
       // outgoing: error
-        
-      const { userId, card } = req.body;
+      console.log(req.body);  
+      const { userName, password, email, firstName, lastName } = req.body;
+      console.log(req.body);
     
-      const newCard = {Card:card,UserId:userId};
+      //const newUser = {Card:card,UserId:userId};
+      const newUser = {userName:userName, password:password, email:email, firstName:firstName, lastName:lastName, isVerified:0};
       var error = '';
+      console.log(newUser);
     
       try
       {
         const db = client.db();
-        const result = db.collection('Cards').insertOne(newCard);
+        const results = await db.collection('Users').find({userName:userName}).toArray();
+        console.log(results);
+
+        if (results.length > 0){
+          error = "Username already taken.";
+        } else {
+          const result = db.collection('Users').insertOne(newUser);
+        }
       }
       catch(e)
       {
         error = e.toString();
       }
     
-      cardList.push( card );
+      
     
       var ret = { error: error };
       res.status(200).json(ret);
@@ -59,7 +69,6 @@ exports.setApp = function ( app, client )
         }
 
         var ret = { id:id, firstName: fn, lastName: ln, username:username, error:''};
-        console.log(ret);
         res.status(200).json(ret);
     });
     
