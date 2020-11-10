@@ -101,6 +101,7 @@ exports.setApp = function ( app, client )
     
       var ObjectId = require('mongodb').ObjectId;
       var error = '';
+      var result = null;
     
       const {spot_id, user_id, rating} = req.body;
       var ospot_id = new ObjectId(spot_id);
@@ -117,10 +118,9 @@ exports.setApp = function ( app, client )
         //if no document found then create one
         var options = {upsert:true};
         
-        db.collection('Ratings').updateOne(find,update,options)
+        result = await db.collection('Ratings').updateOne(find,update,options)
         //const results = await db.collection('Ratings').find({user_id:ouser_id, spot_id:ospot_id}).toArray();
 
-        console.log("updated to " + rating);
 
       }
       catch(e)
@@ -129,7 +129,7 @@ exports.setApp = function ( app, client )
       }
 
       //if we updated we have to update the new average
-      if(error == ''){
+      if(result != null){
         try{
           const db = client.db();
           
