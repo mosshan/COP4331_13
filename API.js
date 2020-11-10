@@ -33,7 +33,7 @@ exports.setApp = function ( app, client )
         // incoming: login, password
         // outgoing: id, firstName, lastName, error
 
-        console.log(req.body);
+        
 
         var error = '';
 
@@ -43,7 +43,7 @@ exports.setApp = function ( app, client )
         const results = await db.collection('Users').find({username:login,password:password}).toArray();
 
         console.log(results);
-        console.log(results.length);
+        
 
         var id = -1;
         var fn = '';
@@ -52,7 +52,7 @@ exports.setApp = function ( app, client )
 
         if( results.length > 0 )
         {
-            id = results[0].user_id;
+            id = results[0]._id;
             fn = results[0].FirstName;
             ln = results[0].LastName;
             username = results[0].username
