@@ -6,20 +6,16 @@ exports.setApp = function ( app, client )
     {
       // incoming: userName, Password, Email, FirstName, LastName
       // outgoing: error
-      console.log(req.body);  
-      const { userName, password, email, firstName, lastName } = req.body;
-      console.log(req.body);
+      const { userName, password, email /*firstName, lastName*/ } = req.body;
     
       //const newUser = {Card:card,UserId:userId};
-      const newUser = {userName:userName, password:password, email:email, firstName:firstName, lastName:lastName, isVerified:0};
+      const newUser = {userName:userName, password:password, email:email, /*firstName:firstName, lastName:lastName,*/ isVerified:false};
       var error = '';
-      console.log(newUser);
     
       try
       {
         const db = client.db();
         const results = await db.collection('Users').find({userName:userName}).toArray();
-        console.log(results);
 
         if (results.length > 0){
           error = "Username already taken.";
@@ -51,8 +47,6 @@ exports.setApp = function ( app, client )
 
         const db = client.db();
         const results = await db.collection('Users').find({username:login,password:password}).toArray();
-
-        console.log(results);
         
 
         var id = -1;
@@ -63,37 +57,13 @@ exports.setApp = function ( app, client )
         if( results.length > 0 )
         {
             id = results[0]._id;
-            fn = results[0].FirstName;
-            ln = results[0].LastName;
+            //fn = results[0].FirstName;
+            //ln = results[0].LastName;
             username = results[0].username
         }
 
-        var ret = { id:id, firstName: fn, lastName: ln, username:username, error:''};
+        var ret = { id:id, /*firstName: fn, lastName: ln,*/ username:username, error:''};
         res.status(200).json(ret);
-    });
-    
-    app.post('/api/searchcards', async (req, res, next) => 
-    {
-      // incoming: userId, search
-      // outgoing: results[], error
-    
-      var error = '';
-    
-      const { userId, search } = req.body;
-    
-      var _search = search.trim();
-      
-      const db = client.db();
-      const results = await db.collection('Cards').find({"Card":{$regex:_search+'.*', $options:'r'}}).toArray();
-      
-      var _ret = [];
-      for( var i=0; i<results.length; i++ )
-      {
-        _ret.push( results[i].Card );
-      }
-      
-      var ret = {results:_ret, error:error};
-      res.status(200).json(ret);
     });
 
     app.post('/api/fetchSpots', async (req, res, next) => 
@@ -121,6 +91,62 @@ exports.setApp = function ( app, client )
       }
       
       var ret = {results:_ret, error:error};
+      res.status(200).json(ret);
+    });
+
+    app.post('/api/rate', async (req, res, next) => 
+    {
+      // incoming: spot_id, user_id, rating (1-5)
+      // outgoing: error
+    
+      var ObjectId = require('mongodb').ObjectId;
+      var error = '';
+    
+      const {spot_id, user_id, rating} = req.body;
+      var ospot_id = new ObjectId(spot_id);
+      var ouser_id = new ObjectId(user_id);
+    
+      
+      try
+      {
+        const db = client.db();
+        
+        //clean up the update fields
+        var find = {user_id:ouser_id, spot_id:ospot_id};
+        var update = {$set:{rating:rating}};
+        //if no document found then create one
+        var options = {upsert:true};
+        
+        db.collection('Ratings').updateOne(find,update,options)
+        //const results = await db.collection('Ratings').find({user_id:ouser_id, spot_id:ospot_id}).toArray();
+
+        console.log("updated to " + rating);
+
+      }
+      catch(e)
+      {
+        error = e.toString();
+      }
+
+      //if we updated we have to update the new average
+      if(error == ''){
+        try{
+          const db = client.db();
+          
+          const results = await db.collection('Ratings').find({spot_id:ospot_id}).toArray();
+          console.log(results);
+          var ratingsSum = 0;
+          for (i=0;i < results.length;i++){
+            ratingsSum += results[i].rating;
+          }
+          ratingAverage = ratingsSum/results.length;
+          db.collection('StudySpots').updateOne({_id:ospot_id},{$set:{spot_rating:ratingAverage}});
+        }catch(e){
+          error = e.toString();
+        }
+      }
+      
+      var ret = {error:error};
       res.status(200).json(ret);
     });
     
