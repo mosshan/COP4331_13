@@ -8,12 +8,13 @@ export default class SignUp extends Component
     state = {
       email: '',
       password: '',
-      firstName: '',
-      lastName: '',
+      passwordCheck: '',
       username: '',
       validEmail: false,
       validPassword: false,
-      validUsername: false
+      validUsername: false,
+      validPasswordCheck: false,
+      validConfirm: false,
     }
 
     handleEmail = (text) => {
@@ -22,26 +23,32 @@ export default class SignUp extends Component
     handlePassword = (text) => {
         this.setState({ password: text })
     }
+    handlePasswordCheck = (text) => {
+      this.setState({ passwordCheck: text })
+    }
+
     handleUsername = (text) => {
       this.setState({ username: text })
     }
-    handleFirstName = (text) => {
-        this.setState({ firstName: text })
-    }
-    handleLastName = (text) => {
-      this.setState({ lastName: text })
-    }
 
-    signup = (email, pass, user, first, last) => {
+    signup = (email, pass, user) => {
         this.validateInput();
         if(this.state.validPassword && this.state.validEmail && this.state.validUsername)
         {
-          alert('email: ' + email + ' password: ' + pass + ' username: ' + user + ' firstName: ' + first + ' lastName:' + last);
+          alert('email: ' + email + ' password: ' + pass + ' username: ' + user );
           this.props.navigation.navigate('Login');
         }
         if(!this.state.validPassword)
         {
           alert('Please enter a password');
+        }
+        if(!this.state.validPasswordCheck)
+        {
+          alert('Passwords are not matching');
+        }
+        if(!this.state.validConfirm)
+        {
+          alert('Please confirm your password');
         }
         if(!this.state.validEmail)
         {
@@ -57,7 +64,10 @@ export default class SignUp extends Component
       const emailCheckRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       this.state.validEmail = emailCheckRegex.test(this.state.email);
       this.state.validPassword = !(this.state.password === '');
-      this.state.validUsername = !(this.state.username === ''); 
+      this.state.validPasswordCheck = (this.state.passwordCheck === this.state.password);
+      this.state.validConfirm = !(this.state.passwordCheck === '');
+      this.state.validUsername = !(this.state.username === '');
+
     };
 
     render() 
@@ -69,18 +79,6 @@ export default class SignUp extends Component
                   <Text style={styles.text} ></Text>
                   <Text style={styles.text} >Sign Up</Text>
                   <Text style={styles.text} ></Text>
-                  
-                  <TextInput style={styles.input} 
-                        placeholderTextColor='white'
-                        underlineColorAndroid='white' 
-                        placeholder="First Name"
-                        onChangeText = {this.handleFirstName} />
-
-                  <TextInput style={styles.input} 
-                        placeholderTextColor='white'
-                        underlineColorAndroid='white' 
-                        placeholder="Last Name"
-                        onChangeText = {this.handleLastName} /> 
 
                   <TextInput style={styles.input} 
                         placeholderTextColor='white'
@@ -101,9 +99,20 @@ export default class SignUp extends Component
                         placeholder="Password"
                         onChangeText = {this.handlePassword} /> 
 
+                  <TextInput style={styles.input}
+                        secureTextEntry={true}
+                        placeholderTextColor='white'
+                        underlineColorAndroid='white' 
+                        placeholder="Confirm Password"
+                        onChangeText = {this.handlePasswordCheck} />  
                   
                   <View style = {styles.buttonContainer}>
                     <TouchableOpacity
+                      style={{
+                        borderRadius: 40,
+                        borderColor: '#FF000000',
+                        borderWidth: 10,
+                      }}
                       onPress={
                       () => {this.signup(this.state.email, this.state.password, this.state.username, this.state.firstName, this.state.lastName)}
                      }>
@@ -112,7 +121,22 @@ export default class SignUp extends Component
                       </Text>
                     </TouchableOpacity>
                   </View>
-                  <Text style={styles.text} ></Text>
+                    
+                  <View style = {styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={{
+                        borderRadius: 40,
+                        borderColor: '#FF000000',
+                        borderWidth: 1,
+                      }}
+                      onPress={
+                      () => {this.props.navigation.navigate('Login')}
+                     }>
+                      <Text style = {styles.button}>
+                        Login
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
 
                 </ImageBackground>
             </View>
@@ -156,7 +180,8 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       textAlign: "center",
       fontSize: 15,
-      padding: 15,
+      width: 200,
+      padding: 12,
       fontWeight: "bold",
       backgroundColor: 'rgba(255, 201, 4, .9)'
     }
