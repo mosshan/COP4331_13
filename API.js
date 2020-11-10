@@ -95,5 +95,33 @@ exports.setApp = function ( app, client )
       var ret = {results:_ret, error:error};
       res.status(200).json(ret);
     });
+
+    app.post('/api/fetchSpots', async (req, res, next) => 
+    {
+      // incoming: place id
+      // outgoing: results[], error
+    
+      var ObjectId = require('mongodb').ObjectId;
+      var error = '';
+    
+      const {place_id} = req.body;
+      console.log(place_id);
+      var object_id = new ObjectId(place_id);
+      console.log(object_id);
+    
+      
+      const db = client.db();
+      const results = await db.collection('StudySpots').find({place_id:object_id}).toArray();
+      console.log(results);
+      
+      var _ret = [];
+      for( var i=0; i<results.length; i++ )
+      {
+        _ret.push( results[i] );
+      }
+      
+      var ret = {results:_ret, error:error};
+      res.status(200).json(ret);
+    });
     
 }
