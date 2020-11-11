@@ -58,7 +58,7 @@ function SignUp() {
             <input type="text" class="sign-up-input" placeholder="Username" ref={(c) => signUser = c} /><br />
             <input type="text" class="sign-up-input" placeholder="Email"ref={(c) => signEmail = c} /><br />
             <input type="password" class="sign-up-input" placeholder="Password"ref={(c) => signPass = c}  /><br />
-            <input type="password" class="sign-up-input" placeholder="Password" ref={(c) => confirmPass = c}  /><br />
+            <input type="password" class="sign-up-input" placeholder="Comfirm Password" ref={(c) => confirmPass = c}  /><br />
             <input type="submit" class="register-button" value = "Create Account" onClick={doSignUp} />
             <label class="existed-acc"> Already have an Account? </label>
             <input type="submit" class="register-button" value = "Log In" onClick={doSignUp} />
