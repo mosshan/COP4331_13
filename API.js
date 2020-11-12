@@ -9,13 +9,13 @@ exports.setApp = function ( app, client )
       const { userName, password, email /*firstName, lastName*/ } = req.body;
     
       //const newUser = {Card:card,UserId:userId};
-      const newUser = {userName:userName, password:password, email:email, /*firstName:firstName, lastName:lastName,*/ isVerified:false};
+      const newUser = {username:userName, password:password, email:email, /*firstName:firstName, lastName:lastName,*/ isVerified:false};
       var error = '';
     
       try
       {
         const db = client.db();
-        const results = await db.collection('Users').find({userName:userName}).toArray();
+        const results = await db.collection('Users').find({username:userName}).toArray();
 
         if (results.length > 0){
           error = "Username already taken.";

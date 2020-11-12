@@ -18,8 +18,13 @@ function setLoginButton(props)
   catch(e)
   {
     id = 0;
+    
   }
-  if (id > 0)
+
+  console.log(id);
+  console.log(localStorage);
+
+  if (id != -1)
   {
     return (<LoggedInName />);
   }

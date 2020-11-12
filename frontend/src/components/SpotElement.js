@@ -7,7 +7,7 @@ let disabled = true;
 function setDisabled() {
    try {
       let id = (JSON.parse(localStorage.user)).id;
-      if (id > 0) {
+      if (id != -1) {
          disabled = false;
          return disabled;
       }
