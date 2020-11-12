@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
-import './SignUp.css';
+// import './SignUp.css';
 // import {Button} from './Button';
 
 function SignUp() {
@@ -11,40 +11,57 @@ function SignUp() {
      var signPass; /* password */
      var confirmPass; /*confirm password */
 
-     var message;
+    const app_name = 'cop4331-8'
+    function buildPath(route)
+    {
+        if (process.env.NODE_ENV === 'production') 
+        {
+            return 'https://' + app_name +  '.herokuapp.com/' + route;
+        }
+        else
+        {        
+            return 'http://localhost:5000/' + route;
+        }
+    }
+    
+    var loginName;
+    var loginPassword;
+
+    const [message,setMessage] = useState('');
 
     const doSignUp = async event => {
+        
 
-           event.preventDefault();
+        event.preventDefault();
     
-            var objs = {userName:signUser.value, email:signEmail.value, password:signPass.value, cPassword: confirmPass.value};
-            var js = JSON.stringify(objs);
-    
-            try
-            {    
-                const response = await fetch(buildPath('/api/register'),
-                    {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-    
-                var res = JSON.parse(await response.text());
-    
-                if( res.id <= 0 )
-                {
-                    setMessage('User/Password combination incorrect');
-                }
-                else
-                {
-                    var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
-                    localStorage.setItem('user_data', JSON.stringify(user));
-    
-                    setMessage('');
-                    window.location.href = '/cards';
-                }
-            }
-            catch(e)
+        var objs = {userName:signUser.value, email:signEmail.value, password:signPass.value, cPassword: confirmPass.value};
+        var js = JSON.stringify(objs);
+
+        try
+        {    
+            const response = await fetch(buildPath('/api/register'),
+                {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+
+            var res = JSON.parse(await response.text());
+
+            if( res.id <= 0 )
             {
-                alert(e.toString());
-                return;
-            }   
+                setMessage('User/Password combination incorrect');
+            }
+            else
+            {
+                var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
+                localStorage.setItem('user_data', JSON.stringify(user));
+
+                setMessage('');
+                window.location.href = '/cards';
+            }
+        }
+        catch(e)
+        {
+            alert(e.toString());
+            return;
+        }   
     } 
     
     /*creates function doSignUp */

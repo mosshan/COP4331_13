@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ImageMapper from 'react-image-mapper';
 import image from '../images/ucfMap.png';
+import getSpots from './FetchSpots';
 import './CSS/map.css';
 
 var MAP = {
@@ -171,11 +172,14 @@ var MAP = {
 };
 
 function f() {
+	let index = 0;
 	MAP.areas.forEach(obj => {
 		obj.shape = "poly";
 		obj.preFillColor = "transparent";
 		obj.strokeColor = "transparent";
 		obj.fillColor = "rgb(255,255,0,0.3)";
+		obj.id = index++;
+		console.log(obj);
 	});
 };
 f();
@@ -207,6 +211,9 @@ class Map extends React.Component
 			)} !`
 		});
 		localStorage.location = area.name;
+		localStorage.locationId = area.id;
+		localStorage.currentSpots = getSpots(area.id);
+		console.log(localStorage)
 		window.location.href = '/study';
 	};
 	clickedOutside(evt) {
