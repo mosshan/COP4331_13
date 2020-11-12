@@ -3,11 +3,13 @@ import React from 'react';
 import SignUp from '../components/SignUp';
 import PageTitle from '../components/PageTitle';
 
+import './CSS/SignUp.css';
+
 const SignUpPage = () =>
 {
     return(
       <div class="login-page" >
-        <PageTitle />
+        <PageTitle text='Study Knights'/>
         <SignUp />
       </div>
 
