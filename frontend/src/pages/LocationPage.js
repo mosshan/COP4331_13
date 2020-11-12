@@ -45,12 +45,12 @@ const LocationPage = (props) =>
             <PageTitle text={props.name} />
             <ul className="spot-container">
                 <h2 className="spot-inner-title">Study Spots</h2>
-                {f()}
-                {/* <Spot rating="1" name="Spot 1" />
+                {/* {f()} */}
+                <Spot rating="1" name="Spot 1" />
                 <Spot rating="2" name="Spot 2" />
                 <Spot rating="3" name="Spot 3" />
                 <Spot rating="4" name="Spot 4" />
-                <Spot rating="5" name="Spot 5" /> */}
+                <Spot rating="5" name="Spot 5" />
             </ul>
         </div>
     );

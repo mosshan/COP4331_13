@@ -41,7 +41,7 @@ function Spots() {
         }
         catch(e)
         {
-            alert(e.toString());
+            // alert(e.toString());
             return (null);
         }    
     };

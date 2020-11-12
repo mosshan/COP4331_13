@@ -23,9 +23,6 @@ function SignUp() {
             return 'http://localhost:5000/' + route;
         }
     }
-    
-    var loginName;
-    var loginPassword;
 
     const [message,setMessage] = useState('');
 
@@ -34,27 +31,27 @@ function SignUp() {
 
         event.preventDefault();
     
-        var objs = {userName:signUser.value, email:signEmail.value, password:signPass.value, cPassword: confirmPass.value};
+        var objs = {userName:signUser.value, email:signEmail.value, password:signPass.value};
         var js = JSON.stringify(objs);
 
         try
         {    
-            const response = await fetch(buildPath('/api/register'),
+            const response = await fetch(buildPath('api/register'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
 
             var res = JSON.parse(await response.text());
 
-            if( res.id <= 0 )
+            if( res.error === '' )
             {
-                setMessage('User/Password combination incorrect');
+                // var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
+                // localStorage.setItem('user_data', JSON.stringify(user));
+
+                setMessage('');
+                window.location.href = '/login';
             }
             else
             {
-                var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
-                localStorage.setItem('user_data', JSON.stringify(user));
-
-                setMessage('');
-                window.location.href = '/cards';
+                setMessage('Error creating account');
             }
         }
         catch(e)
