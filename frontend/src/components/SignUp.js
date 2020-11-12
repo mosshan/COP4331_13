@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
-import './SignUp.css';
+import './CSS/SignUp.css';
 // import {Button} from './Button';
 
 function SignUp() {
