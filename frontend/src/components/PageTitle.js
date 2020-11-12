@@ -17,8 +17,7 @@ function setLoginButton(props)
   }
   catch(e)
   {
-    id = 0;
-    
+    id = -1;
   }
 
   console.log(id);

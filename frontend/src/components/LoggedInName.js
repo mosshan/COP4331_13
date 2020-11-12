@@ -38,7 +38,7 @@ function LoggedInName()
           firstName:"",
           lastName:"",
           username: "",
-          id:0
+          id:-1
         }
       );
       localStorage.user = emptyUser

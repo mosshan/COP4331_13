@@ -179,7 +179,6 @@ function f() {
 		obj.strokeColor = "transparent";
 		obj.fillColor = "rgb(255,255,0,0.3)";
 		obj.id = index++;
-		console.log(obj);
 	});
 };
 f();

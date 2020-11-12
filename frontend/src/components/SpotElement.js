@@ -50,9 +50,10 @@ class Spot extends React.Component
 
 
    setDisabled = function() {
+      console.log(localStorage);
       try {
          let id = (JSON.parse(localStorage.user)).id;
-         if (id != -1 || !this.state.rated) {
+         if (id != -1 && !this.state.rated) {
             this.setState({disabled: false});
          }
          else {
@@ -65,7 +66,7 @@ class Spot extends React.Component
       }
    }
 
-   
+  
 
    render() {
       return(
