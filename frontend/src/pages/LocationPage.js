@@ -14,9 +14,63 @@ import '../components/CSS/map.css';
 //     spots[] <-- list of spots within location
 // ]
 
+const app_name = 'cop4331-8'
+function buildPath(route)
+{
+    if (process.env.NODE_ENV === 'production') 
+    {
+        return 'https://' + app_name +  '.herokuapp.com/' + route;
+    }
+    else
+    {        
+        return 'http://localhost:5000/' + route;
+    }
+}
+
+const getSpots = async event => 
+{
+
+    event.preventDefault();
+
+    var obj = {place_id: localStorage.locationId};
+    var js = JSON.stringify(obj);
+
+    try
+    {    
+        const response = await fetch(buildPath('api/fetchSpots'),
+            {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+
+        var res = JSON.parse(await response.text());
+        console.log(res);
+
+        var spotList;
+        if (res.results.length <= 0)
+        {
+            return null;
+        }
+        // map
+        let spots = [];
+        res.results.forEach(element => {
+            spots.push(element);
+        });
+        localStorage.currentSpots = spots;
+        return spots;
+    }
+    catch(e)
+    {
+        alert(e.toString());
+        return (null);
+    }    
+};
+
+
+
 function f()
 {
+    
     let spotArray = Array(localStorage.currentSpots);
+    console.log(localStorage)
+    console.log(spotArray);
     let spotDivs = [];
     if (spotArray[0] === "undefined")
     {
@@ -41,7 +95,7 @@ const LocationPage = (props) =>
 
     console.log(props);
     return(
-        <div className="home-page">
+        <div className="home-page" onLoad={getSpots}>
             <PageTitle text={props.name} />
             <ul className="spot-container">
                 <h2 className="spot-inner-title">Study Spots</h2>

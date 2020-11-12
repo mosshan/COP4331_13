@@ -14,11 +14,15 @@ function Spots() {
         }
     }
 
-    const getSpots = async (props) => 
+    const getSpots = async event => 
     {
-        var obj = {place_id: props.id};
+
+        event.preventDefault();
+
+        var obj = {place_id: localStorage.locationId};
         var js = JSON.stringify(obj);
 
+        console.log(js);
         try
         {    
             const response = await fetch(buildPath('api/fetchSpots'),
@@ -41,7 +45,7 @@ function Spots() {
         }
         catch(e)
         {
-            // alert(e.toString());
+            alert(e.toString());
             return (null);
         }    
     };
