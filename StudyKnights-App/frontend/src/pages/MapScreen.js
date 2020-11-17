@@ -2,7 +2,7 @@
 import React, { Component } from 'react';	
 import {View, StyleSheet, Text , Dimensions, Image, TouchableOpacity} from 'react-native';	
 import MapView, {Callout, Marker}  from "react-native-maps";	
-import '../components/StudySpots';
+import Spot from '../components/FetchSpots';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class Map extends Component {	
@@ -359,8 +359,8 @@ export default class Map extends Component {
       // save error
     }
   } 
-
-    alert("chosen index is" + index);
+  //spot.getSpots();
+  alert("chosen index is" + index);
   }
 
   
@@ -423,11 +423,12 @@ export default class Map extends Component {
               <View style = {styles.button}>
                 <TouchableOpacity
                   onPress={() => {this.closeRating()}}>
-                  <Text>  x  </Text>
+                  <Text>x</Text>
                 </TouchableOpacity>
               </View>
               <View>
                 <Text style={styles.description}>  {this.state.markers[this.state.chosenMarker].title} Study Spots</Text>
+                <Spot></Spot>
               </View>
             </View>
 
