@@ -75,13 +75,12 @@ exports.setApp = function ( app, client )
       var error = '';
     
       const {place_id} = req.body;
-      console.log(place_id);
-      var object_id = new ObjectId(place_id);
-      console.log(object_id);
+      
+      
     
       
       const db = client.db();
-      const results = await db.collection('StudySpots').find({place_id:object_id}).toArray();
+      const results = await db.collection('StudySpots').find({place_id:place_id}).toArray();
       console.log(results);
       
       var _ret = [];
