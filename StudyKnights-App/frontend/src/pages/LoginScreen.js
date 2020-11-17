@@ -1,35 +1,68 @@
-// Loginscreen.js
 import React, {Component} from 'react';
 import {ImageBackground, StyleSheet, View, Text, TouchableOpacity, TextInput} from 'react-native';
 import SignUpBackground from 'C:\\Users\\domin\\Desktop\\code\\StudyKnights\\SignUpBack.png';
 
 
-export default class Login extends Component
+export default class SignUp extends Component
 {
-    state = {
+    state =
+    {
       username: '',
       password: '',
       validUsername: false,
       validPassword: false,
     }
 
-    handleUsername = (text) => {
+    handleUsername = (text) =>
+    {
       this.setState({ username: text })
     }
-    handlePassword = (text) => {
+    handlePassword = (text) =>
+    {
         this.setState({ password: text })
     }
 
-    validateInput = () => {
+    validateInput = () =>
+    {
       this.state.validUsername = !(this.state.username === '');
       this.state.validPassword = !(this.state.password === '');
     };
 
-    login = () => {
+    login = () =>
+    {
            this.validateInput();
            if(this.state.validPassword && this.state.validUsername)
            {
-             alert('noice');
+             var obj = {login: this.state.username, password: this.state.password};
+             var js = JSON.stringify(obj);
+
+             fetch('https://study-knights.herokuapp.com/api/login', {
+               method:'POST',
+               headers:{
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                       },
+               body:js,
+             })
+             .then(response => response.json())
+             .then(responseJSON => {
+             alert(responseJSON);
+
+             if(responseJSON.status <= 0)
+             {
+              alert('Invalid username and password combination.');
+             }
+             else
+             {
+              //this.props.navigation.navigate('Home');
+              alert('else');
+             }
+
+          })
+          .catch(error =>
+             {
+              console.error(error);
+             });
            }
            else if(!this.state.validUsername && !this.state.validPassword)
            {
@@ -91,7 +124,7 @@ export default class Login extends Component
                              borderWidth: 1,
                            }}
                            onPress={
-                           () => {this.props.navigation.navigate('Login')}
+                           () => {this.props.navigation.navigate('SignUpScreen')}
                           }>
                            <Text style = {styles.button}>
                              Register

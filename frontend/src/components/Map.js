@@ -101,7 +101,7 @@ var MAP = {
 		coords: [1047,873,1088,873,1088,909,1047,909],
 	},
 	{
-		name: "Pschological Services",
+		name: "Psychological Services",
 		coords: [1109,866,1169,866,1169,902,1109,902],
 	},
 	{
