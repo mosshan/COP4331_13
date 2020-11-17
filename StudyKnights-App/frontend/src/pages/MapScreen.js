@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {View, StyleSheet, Text , Dimensions, Image, TouchableOpacity} from 'react-native';	
 import MapView, {Callout, Marker}  from "react-native-maps";	
 import '../components/StudySpots';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class Map extends Component {	
 
@@ -11,8 +12,7 @@ export default class Map extends Component {
     chosenMarker: -1,
     markers: [		
       {	
-        key: 1,
-        showRate:false,
+        key: 0,
         coordinate: {	
           latitude: 28.603832,	
           longitude: -81.200563,	
@@ -20,8 +20,7 @@ export default class Map extends Component {
         title: "Classroom Building 1",	
       },	
       {	
-        key: 2,
-        showRate:false,
+        key: 1,
         coordinate: {	
           latitude: 28.601514,	
           longitude: -81.200488,	
@@ -29,8 +28,7 @@ export default class Map extends Component {
         title: "Classroom Building 2",	
       },
       {	
-        key: 3,
-        showRate:false,
+        key: 2,
         coordinate: {	
           latitude: 28.602960,	
           longitude: -81.198635,	
@@ -38,8 +36,7 @@ export default class Map extends Component {
         title: "Health and Public Affairs",	
       },	
       {	
-        key: 4,
-        showRate:false,
+        key: 3,
         coordinate: {	
           latitude: 28.603139,	
           longitude: -81.198109,	
@@ -47,8 +44,7 @@ export default class Map extends Component {
         title: "Health and Public Affairs 2",	
       },
       {	
-        key: 5,
-        showRate:false,
+        key: 4,
         coordinate: {	
           latitude: 28.604623,	
           longitude: -81.199517,	
@@ -56,8 +52,7 @@ export default class Map extends Component {
         title: "Psychology",	
       },	
       {	
-        key: 6,
-        showRate:false,
+        key: 5,
         coordinate: {	
           latitude: 28.605286,	
           longitude: -81.199123,	
@@ -65,8 +60,7 @@ export default class Map extends Component {
         title: "CSEL",	
       },
       {	
-        key: 7,
-        showRate:false,
+        key: 6,
         coordinate: {	
           latitude: 28.606059,	
           longitude: -81.198786,	
@@ -74,26 +68,25 @@ export default class Map extends Component {
         title: "Alumni Center",	
       },
       {	
-        key: 8,
-        showRate:false,
+        key: 7,
         coordinate: {	
           latitude: 28.601437,	
           longitude: -81.198748,	
         },	
+        _id :"5fac7bca84eac1852c28c04e",
         title: "Engineering 1",	
       },	
       {	
-        key: 9,
-        showRate:false,
+        key: 8,
         coordinate: {	
           latitude: 28.602035,	
           longitude: -81.198459,	
-        },	
+        },
+        _id: "5fac7bea84eac1852c28c04f",
         title: "Engineering 2",	
       },
       {	
-        key: 10,
-        showRate:false,
+        key: 9,
         coordinate: {	
           latitude: 28.601263,	
           longitude: -81.197172,	
@@ -101,8 +94,7 @@ export default class Map extends Component {
         title: "CREOL",	
       },	
       {	
-        key: 11,
-        showRate:false,
+        key: 10,
         coordinate: {	
           latitude: 28.600552,	
           longitude: -81.197623,	
@@ -110,8 +102,7 @@ export default class Map extends Component {
         title: "Harris Engineering Center",	
       },
       {	
-        key: 12,
-        showRate:false,
+        key: 11,
         coordinate: {	
           latitude: 28.600913,	
           longitude: -81.199347,	
@@ -119,8 +110,7 @@ export default class Map extends Component {
         title: "Business Administration 1",	
       },
       {	
-        key: 13,
-        showRate:false,
+        key: 12,
         coordinate: {	
           latitude: 28.601199,	
           longitude: -81.199098,	
@@ -128,8 +118,7 @@ export default class Map extends Component {
         title: "Businees Administration 2",	
       },
       {	
-        key: 14,
-        showRate:false,
+        key: 13,
         coordinate: {	
           latitude: 28.601957,	
           longitude: -81.200429,	
@@ -137,8 +126,7 @@ export default class Map extends Component {
         title: "Student Union",	
       },		
       {	
-        key: 15,
-        showRate:false,
+        key: 14,
         coordinate: {	
           latitude: 28.601031,	
           longitude: -81.200280,	
@@ -146,8 +134,7 @@ export default class Map extends Component {
         title: "College of Sciences",	
       },
       {	
-        key: 16,
-        showRate:false,
+        key: 15,
         coordinate: {	
           latitude: 28.600310,	
           longitude: -81.200393,	
@@ -155,8 +142,7 @@ export default class Map extends Component {
         title: "Tech Commons 1",	
       },
       {	
-        key: 17,
-        showRate:false,
+        key: 16,
         coordinate: {	
           latitude: 28.600602,	
           longitude: -81.200350,	
@@ -164,8 +150,7 @@ export default class Map extends Component {
         title: "Tech Commons 2",	
       },
       {	
-        key: 18,
-        showRate:false,
+        key: 17,
         coordinate: {	
           latitude: 28.599481,	
           longitude: -81.200500,	
@@ -173,8 +158,7 @@ export default class Map extends Component {
         title: "Math and Science",	
       },
       {	
-        key: 19,
-        showRate:false,
+        key: 18,
         coordinate: {	
           latitude: 28.599976,	
           longitude: -81.199711,	
@@ -182,8 +166,7 @@ export default class Map extends Component {
         title: "Chemistry",	
       },		
       {	
-        key: 20,
-        showRate:false,
+        key: 19,
         coordinate: {	
           latitude: 28.600405,	
           longitude: -81.199802,	
@@ -191,8 +174,7 @@ export default class Map extends Component {
         title: "Theatre",	
       },
       {	
-        key: 21,
-        showRate:false,
+        key: 20,
         coordinate: {	
           latitude: 28.600161,	
           longitude: -81.198685,	
@@ -200,8 +182,7 @@ export default class Map extends Component {
         title: "Biology",	
       },
       {	
-        key: 22,
-        showRate:false,
+        key: 21,
         coordinate: {	
           latitude: 28.599633,	
           longitude: -81.196685,	
@@ -209,8 +190,7 @@ export default class Map extends Component {
         title: "Arboretum",	
       },
       {	
-        key: 23,
-        showRate:false,
+        key: 22,
         coordinate: {	
           latitude: 28.599256,	
           longitude: -81.199337,	
@@ -218,8 +198,7 @@ export default class Map extends Component {
         title: "Health Center",	
       },
       {	
-        key: 24,
-        showRate:false,
+        key: 23,
         coordinate: {	
           latitude: 28.599418,	
           longitude: -81.198735,	
@@ -227,8 +206,7 @@ export default class Map extends Component {
         title: "Psychological Services",	
       },		
       {	
-        key: 25,
-        showRate:false,
+        key: 24,
         coordinate: {	
           latitude: 28.599832,	
           longitude: -81.198038,	
@@ -236,8 +214,7 @@ export default class Map extends Component {
         title: "Physical Sciences",	
       },
       {	
-        key: 26,
-        showRate:false,
+        key: 25,
         coordinate: {	
           latitude: 28.598718,	
           longitude: -81.198536,	
@@ -245,8 +222,7 @@ export default class Map extends Component {
         title: "Libra Community Center",	
       },
       {	
-        key: 27,
-        showRate:false,
+        key: 26,
         coordinate: {	
           latitude: 28.597954,	
           longitude: -81.199658,	
@@ -254,8 +230,7 @@ export default class Map extends Component {
         title: "Ferrell Commons",	
       },
       {	
-        key: 28,
-        showRate:false,
+        key: 27,
         coordinate: {	
           latitude: 28.601146,	
           longitude: -81.201676,	
@@ -263,8 +238,7 @@ export default class Map extends Component {
         title: "John T. Washington Center",	
       },
       {	
-        key: 29,
-        showRate:false,
+        key: 28,
         coordinate: {	
           latitude: 28.600261,	
           longitude: -81.201537,	
@@ -272,8 +246,7 @@ export default class Map extends Component {
         title: "Library",	
       },		
       {	
-        key: 30,
-        showRate:false,
+        key: 29,
         coordinate: {	
           latitude: 28.602330,	
           longitude: -81.202086,	
@@ -281,8 +254,7 @@ export default class Map extends Component {
         title: "Burnett Honors College",
       },
       {	
-        key: 31,
-        showRate:false,
+        key: 30,
         coordinate: {	
           latitude: 28.601493,	
           longitude: -81.202108,	
@@ -290,8 +262,7 @@ export default class Map extends Component {
         title: "Rehearsal Hall",	
       },
       {	
-        key: 32,
-        showRate:false,
+        key: 31,
         coordinate: {	
           latitude: 28.600274,	
           longitude: -81.202819,	
@@ -299,8 +270,7 @@ export default class Map extends Component {
         title: "Howard Phillips Hall",	
       },
       {	
-        key: 33,
-        showRate:false,
+        key: 32,
         coordinate: {	
           latitude: 28.598970,	
           longitude: -81.202385,	
@@ -308,8 +278,7 @@ export default class Map extends Component {
         title: "Millican Hall",	
       },
       {	
-        key: 34,
-        showRate:false,
+        key: 33,
         coordinate: {	
           latitude: 28.601228,	
           longitude: -81.202701,	
@@ -317,8 +286,7 @@ export default class Map extends Component {
         title: "Trevor Colbourn Hall",	
       },		
       {	
-        key: 35,
-        showRate:false,
+        key: 34,
         coordinate: {	
           latitude: 28.599319,	
           longitude: -81.204075,	
@@ -326,8 +294,7 @@ export default class Map extends Component {
         title: "Teaching Academy",	
       },
       {	
-        key: 36,
-        showRate:false,
+        key: 35,
         coordinate: {	
           latitude: 28.600019,	
           longitude: -81.204294,	
@@ -335,8 +302,7 @@ export default class Map extends Component {
         title: "Education Department",	
       },
       {	
-        key: 37,
-        showRate:false,
+        key: 36,
         coordinate: {	
           latitude: 28.602544,	
           longitude: 81.204645,	
@@ -344,8 +310,7 @@ export default class Map extends Component {
         title: "Performing Arts Center",	
       },
       {	
-        key: 38,
-        showRate:false,
+        key: 37,
         coordinate: {	
           latitude: 28.602786,	
           longitude: -81.203308,	
@@ -353,8 +318,7 @@ export default class Map extends Component {
         title: "Visual Arts Building",	
       },
       {	
-        key: 39,
-        showRate:false,
+        key: 38,
         coordinate: {	
           latitude: 28.603726,	
           longitude: -81.203322,	
@@ -362,15 +326,15 @@ export default class Map extends Component {
         title: "Nicholson School of Communication",	
       },		
       {	
-        key: 40,
-        showRate:false,
+        key: 39,
         coordinate: {	
           latitude: 28.604416,	
           longitude: -81.202541,	
         },	
         title: "Arts and Humanities",	
       },
-    ],
+    ],	
+    
     region: {	
       latitude: 28.602560,	
       longitude: -81.200080,	
@@ -387,8 +351,19 @@ export default class Map extends Component {
       chosenMarker: index,
       mapHeight: Dimensions.get('window').height - 300,
     });
+    
+  setStringValue = async (index) => {
+    try {
+      await AsyncStorage.setItem('markerIndex', index)
+    } catch(e) {
+      // save error
+    }
+  } 
+
     alert("chosen index is" + index);
   }
+
+  
 
   closeRating()
   {
@@ -397,6 +372,15 @@ export default class Map extends Component {
       chosenMarker: -1,
       mapHeight: Dimensions.get('window').height - 150,
     });
+
+    setStringValue = async () => {
+      try {
+        await AsyncStorage.setItem('markerIndex', -1)
+      } catch(e) {
+        // save error
+      }
+    } 
+
     alert("chosen index is neg one");
   }
 
