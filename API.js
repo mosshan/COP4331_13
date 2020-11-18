@@ -171,6 +171,7 @@ exports.setApp = function ( app, client)
       }catch (e){
         error = e.toString();
       }
+      res.redirect('../login');
     });
     
 }
