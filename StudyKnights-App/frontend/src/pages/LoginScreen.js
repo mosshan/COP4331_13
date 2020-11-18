@@ -46,16 +46,16 @@ export default class SignUp extends Component
              })
              .then(response => response.json())
              .then(responseJSON => {
-             alert(responseJSON);
+             alert(responseJSON.id);
 
-             if(responseJSON.status <= 0)
+             if(responseJSON.id <= 0)
              {
               alert('Invalid username and password combination.');
              }
              else
              {
-              //this.props.navigation.navigate('Home');
-              alert('else');
+               //this.props.navigation.navigate('Home');
+               alert('else');
              }
 
           })
@@ -121,13 +121,29 @@ export default class SignUp extends Component
                            style={{
                              borderRadius: 40,
                              borderColor: '#FF000000',
-                             borderWidth: 1,
+                             borderWidth: 10,
                            }}
                            onPress={
                            () => {this.props.navigation.navigate('SignUpScreen')}
                           }>
                            <Text style = {styles.button}>
                              Register
+                           </Text>
+                         </TouchableOpacity>
+                       </View>
+
+                       <View style = {styles.buttonContainer}>
+                         <TouchableOpacity
+                           style={{
+                             borderRadius: 40,
+                             borderColor: '#FF000000',
+                             borderWidth: 1,
+                           }}
+                           onPress={
+                           () => {this.props.navigation.navigate('ForgotPassword')}
+                          }>
+                           <Text style = {styles.button}>
+                             Forgot Password
                            </Text>
                          </TouchableOpacity>
                        </View>
