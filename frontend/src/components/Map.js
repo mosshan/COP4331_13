@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ImageMapper from 'react-image-mapper';
 import image from '../images/ucfMap.png';
-import getSpots from './FetchSpots';
 import './CSS/map.css';
 
 var MAP = {

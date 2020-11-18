@@ -5,7 +5,7 @@ import './CSS/login.css';
 function Login()
 {
 
-    const app_name = 'cop4331-8'
+    const app_name = 'study-knights'
     function buildPath(route)
     {
         if (process.env.NODE_ENV === 'production') 
