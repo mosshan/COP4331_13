@@ -171,7 +171,7 @@ exports.setApp = function ( app, client)
       }catch (e){
         error = e.toString();
       }
-      res.redirect('../login');
+      res.redirect('https://study-knights.herokuapp.com/login');
     });
     
 }
