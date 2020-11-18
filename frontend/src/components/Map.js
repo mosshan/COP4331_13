@@ -211,8 +211,6 @@ class Map extends React.Component
 		});
 		localStorage.location = area.name;
 		localStorage.locationId = area.id;
-		//getSpots(area.id);
-		// console.log(localStorage);
 		window.location.href = '/study';
 	};
 	clickedOutside(evt) {

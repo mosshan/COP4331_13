@@ -6,91 +6,97 @@ import '../components/CSS/spots.css';
 import Map from '../components/Map';
 import './CSS/homepage.css';
 import '../components/CSS/map.css';
-import getSpots from '../components/FetchSpots';
+// import getSpots from '../components/FetchSpots';
 
-// let props = 
-// [
-//     locationName,
-//     id?
-//     spots[] <-- list of spots within location
-// ]
-
-
-function f()
+const app_name = 'cop4331-8'
+function buildPath(route)
 {
-    
-    
-    let spotDivs =  getSpots();;
-    if (spotDivs === undefined)
+    if (process.env.NODE_ENV === 'production') 
     {
-        return (<h1>No Study Spots Available</h1>);
+        return 'https://' + app_name +  '.herokuapp.com/' + route;
     }
-
-    // Map instead here
-    // spotArray.forEach(element => {
-    //     spotDivs.push(<Spot rating={element.rating} name={element.name}/>);
-    // });
-    console.log(spotDivs);
-    return spotDivs;
-}
-
-function load()
-{
-    let spots = [];
-    let spotDivs = [];
-    spots = getSpots();
-    if (spots === undefined)
-    {
-        return (<h1>No Study Spots Available</h1>);
+    else
+    {        
+        return 'http://localhost:5000/' + route;
     }
-
-    // Map instead here
-    spots.forEach(element => {
-        spotDivs.push(<Spot rating={element.rating} name={element.name}/>);
-    });
-    return spotDivs;
 }
-
-
-
 
 class LocationPage extends React.Component
 {
     constructor(props) {
         super(props);
         this.state = {
-           spots: <h1>No Study Spots Available</h1>,
+           spots: [],
+           isLoading: true,
         };
      }
 
-    f2 = function()
-    {  
-        let spots = localStorage.currentSpots;
-        console.log(localStorage);
-        if (spots === "undefined")
-        {
-            return (<h1>No Study Spots Available</h1>);
-        }
+    componentDidMount = async () => {
+        let spots = await this.getSpots();
+        this.setState({spots: spots, isLoading: false});
+    }
 
-        // let spotDivs = spots[0].Map(element => {
-        //     return (<Spot rating={element.rating} name={element.name}/>);
-        // });
-        // return spotDivs;
+    getSpots = async () => {
+        var obj = {place_id: parseInt(localStorage.locationId)};
+        var js = JSON.stringify(obj);
+
+        console.log(js);
+        console.log(localStorage);
+        try
+        {    
+            const response = await fetch(buildPath('api/fetchSpots'),
+                {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+            var preRes = await response.text();
+            console.log(preRes);
+            localStorage.currentSpots = preRes;
+
+            var res = JSON.parse(preRes);
+            console.log(res);
+            if (res.results.length <= 0)
+            {
+                return [];
+            }
+            // map
+            let spots = [];
+            res.results.forEach(element => {
+                spots.push(element);
+            });
+            console.log(spots);
+
+
+            let spotDivs = [];
+            console.log(spotDivs);
+            console.log(localStorage);
+            return spots;
+
+        }
+        catch(e)
+        {
+            alert(e.toString());
+            return [];
+        }  
+        return [];
     }
 
 
     render () {
+        let spotDivs = this.state.spots.map((element) => {
+            return <Spot rating={4} name={"test"}/>;
+        })
+
+
+
         return(
-            <div className="home-page" onLoad={this.f2()}>
+            <div className="home-page" >
                 <PageTitle text={this.props.name} />
                 <ul className="spot-container">
                     <h2 className="spot-inner-title">Study Spots</h2>
-                    {this.state.spots}
-                    {/* <Spot rating="1" name="Spot 1" />
-                    <Spot rating="2" name="Spot 2" />
-                    <Spot rating="3" name="Spot 3" />
-                    <Spot rating="4" name="Spot 4" />
-                    <Spot rating="5" name="Spot 5" /> */}
+                    {this.state.isLoading ? 
+                        null : 
+                            this.state.spots.length > 1 ? 
+                                spotDivs : <h1>No Study Spots Available</h1>
+                         
+                    }
                 </ul>
             </div>
         );
