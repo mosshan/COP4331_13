@@ -6,10 +6,10 @@ import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar } from 'react
 async function setAsyncSpots(spots){
   try {
     await AsyncStorage.setItem('currentSpots', JSON.stringify(spots))
-    alert("success storing spots");
+    //alert("success storing spots" + JSON.stringify(spots));
     return;
   } catch(e) {
-    alert("error when storing spots");
+    //alert("error when storing spots");
     return;
   }
 }; 
@@ -20,14 +20,16 @@ async function getMyPlaceIndex()
       return await AsyncStorage.getItem('@markerIndex');
     } catch(e) {
       // read error
+      console.error('ERROR: no place chosen: ', error);
+      return -1;
     }
 };
 
 async function getSpots()
   {
-    placeIndex = getMyPlaceIndex();
+    var placeIndex = getMyPlaceIndex();
 
-    var obj = {place_id: "5f8f113df6e1cb80236b14f5"}; //FIXME: when api call works correctly lol
+    var obj = {place_id: 0}; //FIXME: when api call works correctly lol
     var js = JSON.stringify(obj);
 
     fetch('https://study-knights.herokuapp.com/api/fetchSpots', {
@@ -40,9 +42,9 @@ async function getSpots()
           })
             .then(response => response.json())
             .then(res => {
-              alert(res);
               if (res.results.length <= 0)
               {
+                //alert("no spots returned");
                 return null;
               }
               // map
@@ -51,31 +53,38 @@ async function getSpots()
                   spots.push(element);
               });
               setAsyncSpots(spots);
+              alert("spots room" + spots[0].room)
               return spots;
             })
             .catch(error => 
               {
-                alert(error.toString());
+                //alert(error.toString());
                 return null;
               });  
   }
-
+/*<FlatList
+    data={getSpots()}
+    renderItem={({ item }) => (
+        <ListItem>
+            title={item.room} 
+            rating={item.spot_rating}
+        </ListItem>
+        <Text>{item[0].room}</Text>
+    )}
+    keyExtractor={(item, index) => index}
+    />*/
 
 function Spot () {
 
-  return(
-    <SafeAreaView style={styles.container}>
-    <FlatList
-    data={getSpots()}
-    renderItem={({ item }) => (
-      <ListItem
-        title={item.room}
-      />
-    )}
-    keyExtractor={item => item.spot_id}
-    />
+  let spotList =  []
+  spotList = getSpots();
+  
+  alert("help me" + spotList[0].room);
 
-      </SafeAreaView>
+  
+  return(
+      <Text>{spotList.room}</Text>
+
   );
 }
 
