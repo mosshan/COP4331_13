@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 import './CSS/login.css';
 
 function Login()
@@ -63,6 +64,7 @@ function Login()
             <input type="text" className="login-input" id="loginName" placeholder="Username"  ref={(c) => loginName = c} /><br />
             <input type="password" className="login-input" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c}  /><br />
             <input type="submit" id="loginButton" className="login-button" value = "Go" onClick={doLogin} />
+            <Link to="/forgotpassword">Forgot Password?</Link>
             <span id="loginResult" className="login-result">{message}</span>
         </form>
     

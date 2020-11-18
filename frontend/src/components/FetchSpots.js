@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Spot from './SpotElement';
 
 function Spots() {
     const app_name = 'cop4331-8'
@@ -14,12 +15,9 @@ function Spots() {
         }
     }
 
-    const getSpots = async event => 
+    const getSpots = async () => 
     {
-
-        event.preventDefault();
-
-        var obj = {place_id: localStorage.locationId};
+        var obj = {place_id: parseInt(localStorage.locationId)};
         var js = JSON.stringify(obj);
 
         console.log(js);
@@ -27,11 +25,14 @@ function Spots() {
         {    
             const response = await fetch(buildPath('api/fetchSpots'),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+            var preRes = await response.text();
+            console.log(preRes);
+            localStorage.currentSpots = preRes;
 
-            var res = JSON.parse(await response.text());
+            var res = JSON.parse(preRes);
+            
             console.log(res);
 
-            var spotList;
             if (res.results.length <= 0)
             {
                 return null;
@@ -41,7 +42,20 @@ function Spots() {
             res.results.forEach(element => {
                 spots.push(element);
             });
-            return spots;
+            console.log(spots);
+
+
+            let spotDivs = [];
+            // spots.forEach(element => {
+            //     spotDivs.push(<Spot rating={element.rating} name={element.name}/>);
+            // });
+            spotDivs = spots.map((element) => {
+                return <Spot rating={4} name={"test"}/>;
+            })
+            console.log(spotDivs);
+            console.log(localStorage);
+            return spotDivs;
+
         }
         catch(e)
         {
@@ -51,7 +65,7 @@ function Spots() {
     };
 
 
-    localStorage.currentSpots = getSpots(localStorage.locationId);
+    // localStorage.currentSpots = getSpots(localStorage.locationId);
 
 }
 

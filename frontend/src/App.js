@@ -5,8 +5,9 @@ import './App.css';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
-import CardPage from './pages/CardPage';
 import LocationPage from './pages/LocationPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ChangePasswordPage from './pages/ChangePasswordPage';
 
 function App() {
   return (
@@ -21,9 +22,13 @@ function App() {
         <Route path="/login" exact>
           <LoginPage />
         </Route>
-       <Route path="/signup" exact>
+        <Route path="/signup" exact>
           <SignUpPage />
         </Route>
+        <Route path="/forgotpassword" exact>
+          <ForgotPasswordPage />
+        </Route>
+        <Route path="/changepassword/:hash" exact component={ChangePasswordPage} />
         <Redirect to="/" />
       </Switch>  
     </Router>
