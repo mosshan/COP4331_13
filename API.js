@@ -1,5 +1,5 @@
 
-exports.setApp = function ( app, client )
+exports.setApp = function ( app, client)
 {
 
   app.post('/api/testemail', async (req, res, next) =>
@@ -19,7 +19,6 @@ exports.setApp = function ( app, client )
       //const newUser = {Card:card,UserId:userId};
       const newUser = {username:userName, password:password, email:email, /*firstName:firstName, lastName:lastName,*/ isVerified:false};
       var error = '';
-    
       try
       {
         const db = client.db();
@@ -29,6 +28,8 @@ exports.setApp = function ( app, client )
           error = "Username already taken.";
         } else {
           const result = db.collection('Users').insertOne(newUser);
+          const user = {username:userName, email:email};
+          sendVerificationEmail(user);
         }
       }
       catch(e)
@@ -156,18 +157,39 @@ exports.setApp = function ( app, client )
       var ret = {error:error};
       res.status(200).json(ret);
     });
+
+    app.get('/api/verify/:token', async (req, res, next) => 
+    {
+      jwt = require('jsonwebtoken');
+      const db = client.db();
+      const EMAIL_KEY = process.env.EMAIL_KEY;
+      var error = ''
+      try{
+        const {username, email} = jwt.verify(req.params.token, EMAIL_KEY)
+        await db.collection('Users').updateOne({username:username, email:email},{$set:{isVerified:true}});
+        console.log('email verified');
+      }catch (e){
+        error = e.toString();
+      }
+    });
     
 }
 
-function sendEmail(){
+function sendVerificationEmail(user){
+  const jwt = require('jsonwebtoken');
   const sgMail = require('@sendgrid/mail');
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  const EMAIL_KEY = process.env.EMAIL_KEY;
+
+  const token = jwt.sign(user, EMAIL_KEY, {expiresIn: '1d'});
+
+  const userurl = `https://study-knights.herokuapp.com/api/verify/${token}`;
+  
   const msg = {
-    to: 'kenneth.bicknell15@gmail.com', // Change to your recipient
-    from: 'cop4331.group13@gmail.com', // Change to your verified sender
-    subject: 'Sending with SendGrid is Fun',
-    text: 'and easy to do anywhere, even with Node.js',
-    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    to: user.email,
+    from: 'cop4331.group13@gmail.com', 
+    subject: 'Please verify your email',
+    html: `Please click this email to confirm your email: <a href="${userurl}">${userurl}</a>`
   }
   sgMail
   .send(msg)
