@@ -173,6 +173,25 @@ exports.setApp = function ( app, client)
       }
       res.redirect('https://study-knights.herokuapp.com/login');
     });
+
+    app.post('/api/sendVerification', async (req, res, next) => 
+    {
+      db = client.db();
+      jwt = require('jsonwebtoken');
+      var error = '';
+      const {username, email} = req.body;
+      var results = null;
+      try{
+        results = await db.collection('Users').find({username:username,email:email}).toArray();
+        if (results.length > 0){
+          const user = {username:username,email:email};
+          sendVerificationEmail(user);
+        }
+      } catch (e){
+        error = e.toString();
+      }
+
+    });
     
 }
 
