@@ -177,7 +177,6 @@ exports.setApp = function ( app, client)
     app.post('/api/sendVerification', async (req, res, next) => 
     {
       db = client.db();
-      jwt = require('jsonwebtoken');
       var error = '';
       const {username, email} = req.body;
       var results = null;
@@ -186,13 +185,58 @@ exports.setApp = function ( app, client)
         if (results.length > 0){
           const user = {username:username,email:email};
           sendVerificationEmail(user);
+        } else {
+          error = "username or email not found"
         }
       } catch (e){
         error = e.toString();
       }
-
+      
+      var ret = {error:error};
+      res.status(200).json(ret);
     });
     
+    app.post('/api/requestReset', async (req, res, next) => 
+    {
+      db = client.db();
+      var error = '';
+      const {username, email} = req.body;
+      var results = null;
+      try{
+        results = await db.collection('Users').find({username:username,email:email}).toArray();
+        if (results.length > 0){
+          const user = {username:username,email:email};
+          sendResetEmail(user);
+        } else {
+          error = "username or email not found"
+        }
+      } catch (e){
+        error = e.toString();
+      }
+      
+      var ret = {error:error};
+      res.status(200).json(ret);
+    });
+
+    app.post('/api/passwordReset', async (req, res, next) => 
+    {
+      db = client.db();
+      jwt = require('jsonwebtoken');
+      var error = '';
+      const {token, newPassword} = req.body;
+      
+
+      var results = null;
+      try{
+        const {username, email} = jwt.verify(token, EMAIL_KEY)
+        await db.collection('Users').updateOne({username:username, email:email},{$set:{password:newPassword}});
+      } catch (e){
+        error = e.toString();
+      }
+      
+      var ret = {error:error};
+      res.status(200).json(ret);
+    });
 }
 
 function sendVerificationEmail(user){
@@ -210,6 +254,32 @@ function sendVerificationEmail(user){
     from: 'cop4331.group13@gmail.com', 
     subject: 'Please verify your email',
     html: `Please click this email to confirm your email: <a href="${userurl}">${userurl}</a>`
+  }
+  sgMail
+  .send(msg)
+  .then(() => {
+    console.log('Email sent')
+  })
+  .catch((error) => {
+    console.error(error)
+  })
+}
+
+function sendResetEmail(user){
+  const jwt = require('jsonwebtoken');
+  const sgMail = require('@sendgrid/mail');
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  const EMAIL_KEY = process.env.EMAIL_KEY;
+
+  const token = jwt.sign(user, EMAIL_KEY, {expiresIn: '1d'});
+
+  const userurl = `https://study-knights.herokuapp.com/api/verify/${token}`;
+  
+  const msg = {
+    to: user.email,
+    from: 'cop4331.group13@gmail.com', 
+    subject: 'Password Reset Request',
+    html: `Please click this link to reset your password: <a href="${userurl}">${userurl}</a>`
   }
   sgMail
   .send(msg)
