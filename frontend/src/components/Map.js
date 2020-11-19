@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ImageMapper from 'react-image-mapper';
 import image from '../images/ucfMap.png';
-import getSpots from './FetchSpots';
 import './CSS/map.css';
 
 var MAP = {
@@ -211,8 +210,6 @@ class Map extends React.Component
 		});
 		localStorage.location = area.name;
 		localStorage.locationId = area.id;
-		// localStorage.currentSpots = getSpots(area.id);
-		console.log(localStorage)
 		window.location.href = '/study';
 	};
 	clickedOutside(evt) {

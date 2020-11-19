@@ -2,13 +2,28 @@ import React from 'react';
 import './CSS/spots.css';
 import Rating from '@material-ui/lab/Rating';
 
+const app_name = 'study-knights'
+function buildPath(route)
+{
+    if (process.env.NODE_ENV === 'production') 
+    {
+        return 'https://' + app_name +  '.herokuapp.com/' + route;
+    }
+    else
+    {        
+        return 'http://localhost:5000/' + route;
+    }
+}
+
 class Spot extends React.Component
 {
    constructor(props) {
       super(props);
       this.state = {
+         id:props.id,
          value:props.rating,
          name: props.name,
+         numRatings: props.numRatings,
          rated: false,
          disabled: this.setDisabled(),
          ratingMessage: this.setInitMessage(),
@@ -66,13 +81,50 @@ class Spot extends React.Component
       }
    }
 
+   subitRating = async (newValue) => {
+      let id;
+      try {
+         id = JSON.parse(localStorage.user).id;
+      }
+      catch(e)
+      {
+         id = 0;
+      }
+
+      var obj = {spot_id: this.state.id, user_id: id, rating: newValue};
+      var js = JSON.stringify(obj);
+
+      console.log(js);
+      console.log(localStorage);
+      try
+      {    
+         const response = await fetch(buildPath('api/rate'),
+               {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+         var res = JSON.parse(await response.text());
+
+         console.log(res);
+         if (res.error != '')
+         {
+               console.log(res.error);
+               return false;
+         }
+         return true;
+
+      }
+      catch(e)
+      {
+         alert(e.toString());
+         return false;
+      } 
+   }
+
   
 
    render() {
       return(
          <div >
             <div className="spot-item" onLoad={this.setDisabled}>
-               <text id="name" className="spot-name" >{this.state.name}</text>
+               <text id="name" className="spot-name" >{"Room " + this.state.name}</text>
                <div id="rating-container" className="rating-container">
                
                   <Rating id="rating-mech" className="rating-stars"
@@ -82,13 +134,13 @@ class Spot extends React.Component
                         console.log('hello world value of ' + this.state.name + ' is now ' + newValue);
                         this.setState({rated: true, disabled: true});
                         this.setState({ratingMessage:<text>Rating Submitted!</text>})
-                        // Call API
-                        // Increment number of ratings and disable stars
+                        console.log(this.state.id);
+                        this.subitRating(newValue);
                      }}
                      precision={0.5}
                      disabled={this.state.disabled}
                   />
-                  <text>(47)</text>
+                  {/* <text>{this.state.numRatings}</text> */}
                </div>
                {this.state.ratingMessage}
             </div>

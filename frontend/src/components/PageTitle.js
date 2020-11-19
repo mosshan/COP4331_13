@@ -20,20 +20,17 @@ function setLoginButton(props)
     id = -1;
   }
 
-  console.log(id);
-  console.log(localStorage);
-
   if (id != -1)
   {
     return (<LoggedInName />);
   }
   else if (props.loginPage)
   {
-    return (<button onClick={() => window.location.href = '/signup'} class="logout-button">Sign Up</button>);
+    return (<button onClick={() => window.location.href = '/signup'} className="logout-button">Sign Up</button>);
   }
   else
   {
-    return (<button onClick={() => window.location.href = '/login'} class="logout-button">Login</button>);
+    return (<button onClick={() => window.location.href = '/login'} className="logout-button">Login</button>);
   }
 }
 

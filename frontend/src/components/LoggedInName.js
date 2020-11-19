@@ -15,7 +15,6 @@ function LoggedInName()
       firstName = user.firstName;
       lastName = user.lastName;
       username = user.username;
-      console.log(user);
     }
     catch(e)
     {

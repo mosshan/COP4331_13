@@ -1,11 +1,11 @@
 // Mapscreen.js	
 import React, { Component } from 'react';	
-import {View, StyleSheet, Text , Dimensions, Image, TouchableOpacity} from 'react-native';	
+import {View, StyleSheet, Text , Dimensions, TouchableOpacity, FlatList} from 'react-native';	
 import MapView, {Callout, Marker}  from "react-native-maps";	
-import Spot from '../components/FetchSpots';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class Map extends Component {	
+  _isMounted = false;
 
   state = {
     mapHeight: Dimensions.get('window').height - 150,
@@ -340,9 +340,76 @@ export default class Map extends Component {
       longitude: -81.200080,	
       latitudeDelta: 0.007,	
       longitudeDelta: 0.007,	
-    },	
+    },
+    spotList: [{_id:"-1", spot_id:"-1", room: "-1", numRatings: -1, spot_rating: -1, place_id:-1}],	
+    noSpots:true,
   };	
-	
+  
+  
+  async setAsyncSpots(spots){
+    try {
+      await AsyncStorage.setItem('currentSpots', JSON.stringify(spots))
+      alert("success storing spots" + JSON.stringify(spots));
+      return;
+    } catch(e) {
+      alert("error when storing spots");
+      return;
+    }
+  }; 
+  
+  async getSpots()
+  {
+      try {
+        return await AsyncStorage.getItem('currentSpots');
+      } catch(e) {
+        // read error
+        console.error('ERROR: no place chosen: ', error);
+        return -1;
+      }
+  };
+  
+  async setSpots()
+    {
+      this._isMounted = true;
+  
+      var obj = {place_id: this.state.chosenMarker}; //FIXME: when api call works correctly lol
+      var js = JSON.stringify(obj);
+  
+      fetch('https://study-knights.herokuapp.com/api/fetchSpots', {
+              method:'POST',
+              headers:{
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body:js,
+            })
+              .then(response => response.json())
+              .then(res => {
+                if (res.results.length <= 0)
+                {
+                  alert("no spots returned");
+                  this.setState({ noSpots: true});
+                  return null;
+                }
+                let spots = [];
+                res.results.forEach(element => {
+                    spots.push(element);
+                });
+                this.setAsyncSpots(spots);
+                if(this._isMounted)
+                {
+                  this.setState({spotList: spots,
+                                  noSpots: false,});
+                }
+                
+                return spots;
+              })
+              .catch(error => 
+                {
+                  //alert(error.toString());
+                  return null;
+                });  
+    }
 
   showRating(index)
   {
@@ -352,18 +419,16 @@ export default class Map extends Component {
       mapHeight: Dimensions.get('window').height - 300,
     });
     
-  setStringValue = async (index) => {
+  this.setStringValue = async (index) => {
     try {
       await AsyncStorage.setItem('markerIndex', index)
     } catch(e) {
       // save error
     }
   } 
-  //spot.getSpots();
-  alert("chosen index is" + index);
+  this.setSpots();
+  //alert("chosen index is" + index);
   }
-
-  
 
   closeRating()
   {
@@ -371,9 +436,10 @@ export default class Map extends Component {
     this.setState({
       chosenMarker: -1,
       mapHeight: Dimensions.get('window').height - 150,
+      noSpots: true,
     });
 
-    setStringValue = async () => {
+    this.setStringValue = async () => {
       try {
         await AsyncStorage.setItem('markerIndex', -1)
       } catch(e) {
@@ -384,7 +450,16 @@ export default class Map extends Component {
     alert("chosen index is neg one");
   }
 
-
+  FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 10,
+          backgroundColor: "rgba(52, 52, 52, 1.0)",
+        }}
+      />
+    );
+  }
 
   render() {	
     return (
@@ -417,20 +492,45 @@ export default class Map extends Component {
           })}	
         </MapView>	
 
-        {this.state.chosenMarker > -1?
-          [
-            <View style = {styles.ratingContainer}>
-              <View style = {styles.button}>
-                <TouchableOpacity
-                  onPress={() => {this.closeRating()}}>
-                  <Text>x</Text>
-                </TouchableOpacity>
+        {(this.state.chosenMarker > -1 )?
+          [ 
+            <View>
+              <View style = {styles.ratingContainer}>
+
+                <View style = {styles.button}>
+                  <TouchableOpacity
+                    onPress={() => {this.closeRating()}}>
+                    <Text> x </Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View>
+                  <Text style={styles.description}>{this.state.markers[this.state.chosenMarker].title} Study Spots</Text>  
+                </View>
+
               </View>
-              <View>
-                <Text style={styles.description}>  {this.state.markers[this.state.chosenMarker].title} Study Spots</Text>
-                <Spot></Spot>
-              </View>
+            {
+              !this.state.noSpots?
+              [
+              <View style = {styles.item}>
+                <FlatList
+                  data={this.state.spotList}
+                  renderItem={({ item }) => (
+                    <Text style={styles.spotRoom}>{item.room}</Text> )}
+                  ItemSeparatorComponent = { this.FlatListItemSeparator }
+                  keyExtractor={item => item.spot_id.toString()}
+                /> 
+              </View> 
+              ]
+              :
+              [
+                <View style = {styles.item}>
+                    <Text style={styles.spotRoom}>No Spots</Text>
+                </View> 
+              ]
+            }
             </View>
+
 
           ]
         : 
@@ -475,7 +575,7 @@ const styles = StyleSheet.create({
   },
   description: {	
     alignSelf:'center',
-    fontSize: 12,	
+    fontSize: 13,	
     fontFamily: 'monospace',	
     padding: 5,	
     color: 'white',
@@ -497,5 +597,20 @@ const styles = StyleSheet.create({
     padding: 3,
     fontWeight: "bold",
     backgroundColor: 'rgba(255, 201, 4, .9)'
-  }
+  },
+  item: {
+    backgroundColor: 'rgba(255, 201, 4, .9)',
+    //padding: 10,
+    marginVertical: 20,
+    marginHorizontal: 16,
+    fontSize: 25,	
+    fontFamily: 'monospace',
+    color: 'white',
+  },
+  spotRoom: {	
+    alignSelf:'center',
+    fontSize: 18,	
+    fontFamily: 'monospace',	
+    color: 'rgba(52, 52, 52, 1.0)',
+  },
 });

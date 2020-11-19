@@ -87,7 +87,7 @@ export default class SignUp extends Component
             .then(responseJson => {
               alert(responseJson);
               
-              if(responseJson.status <= 0)
+              if(responseJson.error !== '')
               {
                 alert('Username already taken.');
               }

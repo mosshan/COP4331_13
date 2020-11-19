@@ -3,80 +3,51 @@ import {ImageBackground, StyleSheet, View, Text, TouchableOpacity, TextInput} fr
 import SignUpBackground from 'C:\\Users\\domin\\Desktop\\code\\StudyKnights\\SignUpBack.png';
 
 
-export default class SignUp extends Component
+export default class ForgotPassword extends Component
 {
     state =
     {
       username: '',
-      password: '',
+      email: '',
       validUsername: false,
-      validPassword: false,
+      validEmail: false,
     }
 
     handleUsername = (text) =>
     {
       this.setState({ username: text })
     }
-    handlePassword = (text) =>
+    handleEmail = (text) =>
     {
-        this.setState({ password: text })
+        this.setState({ email: text })
     }
+
+    reset = () =>
+    {
+      this.validateInput();
+      if(this.state.validEmail && this.state.validUsername)
+      {
+         alert('noice');
+      }
+      else if (!this.state.validEmail && !this.state.validUsername)
+      {
+         alert('Please input your username and email.');
+      }
+      else if(!this.state.validEmail)
+      {
+         alert('Please input your email.');
+      }
+      else if (!this.state.validUsername)
+      {
+         alert('Please input your username.');
+      }
+   }
 
     validateInput = () =>
     {
       this.state.validUsername = !(this.state.username === '');
-      this.state.validPassword = !(this.state.password === '');
+      this.state.validEmail = !(this.state.email === '');
     };
-
-    login = () =>
-    {
-           this.validateInput();
-           if(this.state.validPassword && this.state.validUsername)
-           {
-             var obj = {login: this.state.username, password: this.state.password};
-             var js = JSON.stringify(obj);
-
-             fetch('https://study-knights.herokuapp.com/api/login', {
-               method:'POST',
-               headers:{
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json',
-                       },
-               body:js,
-             })
-             .then(response => response.json())
-             .then(responseJSON => {
-             alert(responseJSON.id);
-
-             if(responseJSON.id <= 0)
-             {
-              alert('Invalid username and password combination.');
-             }
-             else
-             {
-               //this.props.navigation.navigate('Home');
-               alert('else');
-             }
-
-          })
-          .catch(error =>
-             {
-              console.error(error);
-             });
-           }
-           else if(!this.state.validUsername && !this.state.validPassword)
-           {
-             alert('Please enter a username and password');
-           }
-           else if(!this.state.validPassword)
-           {
-             alert('Please enter a password');
-           }
-           else if(!this.state.validUsername)
-           {
-             alert('Please enter a username');
-           }
-       }
 
     render()
     {
@@ -84,7 +55,7 @@ export default class SignUp extends Component
             <View style={styles.container}>
                 <ImageBackground source={SignUpBackground} style ={styles.image}>
                   <Text style={styles.text} ></Text>
-                  <Text style={styles.text} >Login</Text>
+                  <Text style={styles.text} >Password Reset</Text>
                   <Text style={styles.text} ></Text>
 
                   <TextInput style={styles.input}
@@ -97,8 +68,8 @@ export default class SignUp extends Component
                         secureTextEntry={true}
                         placeholderTextColor='white'
                         underlineColorAndroid='white'
-                        placeholder="Password"
-                        onChangeText = {this.handlePassword} />
+                        placeholder="Email"
+                        onChangeText = {this.handleEmail} />
 
                         <View style = {styles.buttonContainer}>
                          <TouchableOpacity
@@ -108,10 +79,10 @@ export default class SignUp extends Component
                              borderWidth: 10,
                            }}
                            onPress={
-                           () => {this.login()}
+                           () => {this.reset()}
                           }>
                            <Text style = {styles.button}>
-                             Login
+                             Send
                            </Text>
                          </TouchableOpacity>
                        </View>
@@ -124,26 +95,10 @@ export default class SignUp extends Component
                              borderWidth: 10,
                            }}
                            onPress={
-                           () => {this.props.navigation.navigate('SignUpScreen')}
+                           () => {this.props.navigation.navigate('LoginScreen')}
                           }>
                            <Text style = {styles.button}>
-                             Register
-                           </Text>
-                         </TouchableOpacity>
-                       </View>
-
-                       <View style = {styles.buttonContainer}>
-                         <TouchableOpacity
-                           style={{
-                             borderRadius: 40,
-                             borderColor: '#FF000000',
-                             borderWidth: 1,
-                           }}
-                           onPress={
-                           () => {this.props.navigation.navigate('ForgotPassword')}
-                          }>
-                           <Text style = {styles.button}>
-                             Forgot Password
+                             Back
                            </Text>
                          </TouchableOpacity>
                        </View>
