@@ -8,7 +8,7 @@ import './CSS/SignUp.css';
 const SignUpPage = () =>
 {
     return(
-      <div class="login-page" >
+      <div className="login-page" >
         <PageTitle text='Study Knights'/>
         <SignUp />
       </div>

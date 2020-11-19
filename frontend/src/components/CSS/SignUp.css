@@ -36,6 +36,16 @@
     border-style: inset;
 }
 
+.sign-up-result {
+    background-color: darkred;
+    color: white;
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-right: 3px;
+    padding-left: 3px;
+}
+
 .register-button {
     background-color: #FFC904;
     border-radius: 12px;

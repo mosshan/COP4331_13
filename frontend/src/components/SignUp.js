@@ -3,35 +3,43 @@ import {Link} from 'react-router-dom';
 import './CSS/SignUp.css';
 // import {Button} from './Button';
 
-function SignUp() {
-
-    /* For input from User*/
-     var signUser; /* username */
-     var signEmail; /* email */
-     var signPass; /* password */
-     var confirmPass; /*confirm password */
-
-    const app_name = 'study-knights'
-    function buildPath(route)
+const app_name = 'study-knights'
+function buildPath(route)
+{
+    if (process.env.NODE_ENV === 'production') 
     {
-        if (process.env.NODE_ENV === 'production') 
-        {
-            return 'https://' + app_name +  '.herokuapp.com/' + route;
-        }
-        else
-        {        
-            return 'http://localhost:5000/' + route;
-        }
+        return 'https://' + app_name +  '.herokuapp.com/' + route;
     }
+    else
+    {        
+        return 'http://localhost:5000/' + route;
+    }
+}
 
-    const [message,setMessage] = useState('');
+class SignUp extends React.Component
+{
 
-    const doSignUp = async event => {
+    constructor(props) {
+        super(props);
+        this.state = {
+            signUser: '',
+            signEmail: '',
+            password: '',
+            confirmPassword: '',
+            message: '',
+            resMessage: '',
+        };
+     }
+
+    
+    
+
+    doSignUp = async event => {
         
 
         event.preventDefault();
     
-        var objs = {userName:signUser.value, email:signEmail.value, password:signPass.value};
+        var objs = {userName:this.state.signUser, email:this.state.signEmail, password:this.state.password};
         var js = JSON.stringify(objs);
 
         try
@@ -46,12 +54,12 @@ function SignUp() {
                 // var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
                 // localStorage.setItem('user_data', JSON.stringify(user));
 
-                setMessage('');
+                this.setState({resMessage:''});
                 window.location.href = '/login';
             }
             else
             {
-                setMessage('Error creating account');
+                this.setState({resMessage:res.error});
             }
         }
         catch(e)
@@ -60,27 +68,58 @@ function SignUp() {
             return;
         }   
     } 
+
+    setUsername = (e) => {
+        this.setState({signUser:e.target.value});
+    }
+    setEmail = (e) => {
+        this.setState({signEmail:e.target.value});
+    }
+
+    setPassword = (e) => {
+        this.setState({password:e.target.value});
+    }
+    setConPassword = (e) => {
+        this.setState({confirmPassword:e.target.value});
+        if (this.state.password !== e.target.value) {
+            this.setState({message:"Passwords don't match"});
+        }
+        else {
+            this.setState({message:''});
+        }
+    }
     
     /*creates function doSignUp */
 
-    return(
+    render () {
+        return(
 
-        <div class="hero-container">
-
-        <form onSubmit={doSignUp} class="sign-up-div">
-            <span id="inner-title" class="inner-title">Sign Up</span>
-            <input type="text" class="sign-up-input" placeholder="Username" ref={(c) => signUser = c} /><br />
-            <input type="text" class="sign-up-input" placeholder="Email"ref={(c) => signEmail = c} /><br />
-            <input type="password" class="sign-up-input" placeholder="Password"ref={(c) => signPass = c}  /><br />
-            <input type="password" class="sign-up-input" placeholder="Comfirm Password" ref={(c) => confirmPass = c}  /><br />
-            <input type="submit" class="register-button" value = "Create Account" onClick={doSignUp} />
-            <label class="existed-acc"> Already have an Account? </label>
-            <input type="submit" class="register-button" value = "Log In" onClick={doSignUp} />
-            <span>{message}</span>
-        </form>  
-        
-        </div>
-      ); 
+            <div className="hero-container">
+    
+            <form onSubmit={this.doSignUp} className="sign-up-div">
+                <span id="inner-title" className="inner-title">Sign Up</span>
+                <input type="text" className="sign-up-input" placeholder="Username"
+                    onChange={this.setUsername}
+                /> <br />
+                <input type="text" className="sign-up-input" placeholder="Email"
+                    onChange={this.setEmail}
+                /><br />
+                <input type="password" className="sign-up-input" placeholder="Password"
+                    onChange={this.setPassword}
+                /><br />
+                <input type="password" className="sign-up-input" placeholder="Confirm Password"
+                    onChange={this.setConPassword}
+                /><br />
+                <input type="submit" className="register-button" value = "Create Account" 
+                    onClick={this.doSignUp} 
+                />
+                <span className="sign-up-result">{this.state.message === '' ? this.state.resMessage : this.state.message}</span>
+            </form>  
+            
+            </div>
+          ); 
+    }
+    
 }
 
 export default SignUp;
