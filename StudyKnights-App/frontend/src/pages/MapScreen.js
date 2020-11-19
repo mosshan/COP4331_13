@@ -2,10 +2,10 @@
 import React, { Component } from 'react';	
 import {View, StyleSheet, Text , Dimensions, Image, TouchableOpacity} from 'react-native';	
 import MapView, {Callout, Marker}  from "react-native-maps";	
-import Spot from '../components/FetchSpots';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class Map extends Component {	
+  _isMounted = false;
 
   state = {
     mapHeight: Dimensions.get('window').height - 150,
@@ -340,9 +340,72 @@ export default class Map extends Component {
       longitude: -81.200080,	
       latitudeDelta: 0.007,	
       longitudeDelta: 0.007,	
-    },	
+    },
+    spotList: [{_id:"-1", spot_id:"-1", room: "-1", numRatings: -1, spot_rating: -1, place_id:-1}],	
   };	
-	
+  
+  
+  async setAsyncSpots(spots){
+    try {
+      await AsyncStorage.setItem('currentSpots', JSON.stringify(spots))
+      alert("success storing spots" + JSON.stringify(spots));
+      return;
+    } catch(e) {
+      alert("error when storing spots");
+      return;
+    }
+  }; 
+  
+  async getSpots()
+  {
+      try {
+        return await AsyncStorage.getItem('currentSpots');
+      } catch(e) {
+        // read error
+        console.error('ERROR: no place chosen: ', error);
+        return -1;
+      }
+  };
+  
+  async setSpots()
+    {
+      this._isMounted = true;
+  
+      var obj = {place_id: 0}; //FIXME: when api call works correctly lol
+      var js = JSON.stringify(obj);
+  
+      fetch('https://study-knights.herokuapp.com/api/fetchSpots', {
+              method:'POST',
+              headers:{
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body:js,
+            })
+              .then(response => response.json())
+              .then(res => {
+                if (res.results.length <= 0)
+                {
+                  //alert("no spots returned");
+                  return null;
+                }
+                let spots = [];
+                res.results.forEach(element => {
+                    spots.push(element);
+                });
+                this.setAsyncSpots(spots);
+                if(this._isMounted)
+                {
+                  this.setState({spotList: spots});
+                }
+                return spots;
+              })
+              .catch(error => 
+                {
+                  //alert(error.toString());
+                  return null;
+                });  
+    }
 
   showRating(index)
   {
@@ -359,11 +422,9 @@ export default class Map extends Component {
       // save error
     }
   } 
-  //spot.getSpots();
-  alert("chosen index is" + index);
+  this.setSpots();
+  //alert("chosen index is" + index);
   }
-
-  
 
   closeRating()
   {
@@ -423,12 +484,12 @@ export default class Map extends Component {
               <View style = {styles.button}>
                 <TouchableOpacity
                   onPress={() => {this.closeRating()}}>
-                  <Text>x</Text>
+                  <Text> x </Text>
                 </TouchableOpacity>
               </View>
               <View>
-                <Text style={styles.description}>  {this.state.markers[this.state.chosenMarker].title} Study Spots</Text>
-                <Spot></Spot>
+                <Text style={styles.description}>{this.state.markers[this.state.chosenMarker].title} Study Spots</Text>
+                <Text>{this.state.spotList[0].room}</Text>
               </View>
             </View>
 
