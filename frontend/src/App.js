@@ -28,7 +28,7 @@ function App() {
         <Route path="/forgotpassword" exact>
           <ForgotPasswordPage />
         </Route>
-        <Route path="/changepassword/:hash" exact component={ChangePasswordPage} />
+        <Route path="/reset/:hash" exact component={ChangePasswordPage} />
         <Redirect to="/" />
       </Switch>  
     </Router>
