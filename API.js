@@ -273,7 +273,7 @@ function sendResetEmail(user){
 
   const token = jwt.sign(user, EMAIL_KEY, {expiresIn: '1d'});
 
-  const userurl = `https://study-knights.herokuapp.com/api/verify/${token}`;
+  const userurl = `https://study-knights.herokuapp.com/reset/${token}`;
   
   const msg = {
     to: user.email,
