@@ -1,6 +1,6 @@
 // Mapscreen.js	
 import React, { Component } from 'react';	
-import {View, StyleSheet, Text , Dimensions, Image, TouchableOpacity} from 'react-native';	
+import {View, StyleSheet, Text , Dimensions, TouchableOpacity, FlatList} from 'react-native';	
 import MapView, {Callout, Marker}  from "react-native-maps";	
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -415,7 +415,7 @@ export default class Map extends Component {
       mapHeight: Dimensions.get('window').height - 300,
     });
     
-  setStringValue = async (index) => {
+  this.setStringValue = async (index) => {
     try {
       await AsyncStorage.setItem('markerIndex', index)
     } catch(e) {
@@ -434,7 +434,7 @@ export default class Map extends Component {
       mapHeight: Dimensions.get('window').height - 150,
     });
 
-    setStringValue = async () => {
+    this.setStringValue = async () => {
       try {
         await AsyncStorage.setItem('markerIndex', -1)
       } catch(e) {
@@ -479,7 +479,8 @@ export default class Map extends Component {
         </MapView>	
 
         {this.state.chosenMarker > -1?
-          [
+          [ 
+            <View>
             <View style = {styles.ratingContainer}>
               <View style = {styles.button}>
                 <TouchableOpacity
@@ -488,10 +489,19 @@ export default class Map extends Component {
                 </TouchableOpacity>
               </View>
               <View>
-                <Text style={styles.description}>{this.state.markers[this.state.chosenMarker].title} Study Spots</Text>
-                <Text>{this.state.spotList[0].room}</Text>
+                <Text style={styles.description}>{this.state.markers[this.state.chosenMarker].title} Study Spots</Text>  
               </View>
             </View>
+                    <View>
+                      <FlatList
+                        data={this.state.spotList}
+                        renderItem={({ item }) => (
+                          <Text>{item.room}</Text> )}
+                        keyExtractor={item => item.spot_id.toString()}
+                      /> 
+                    </View>
+            </View>
+
 
           ]
         : 
