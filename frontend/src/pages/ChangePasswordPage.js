@@ -5,13 +5,13 @@ import PageTitle from '../components/PageTitle';
 import Login from '../components/Login';
 import ChangePassword from '../components/ChangePassword';
 
-const ForgotPasswordPage = () =>
+const ForgotPasswordPage = (props) =>
 {
 
     return(
       <div className="login-page" >
         <PageTitle text="Study Knights"/>
-        <ChangePassword />
+        <ChangePassword hash={props.match.params.hash}/>
       </div>
 
     );
