@@ -6,7 +6,6 @@ import '../components/CSS/spots.css';
 import Map from '../components/Map';
 import './CSS/homepage.css';
 import '../components/CSS/map.css';
-// import getSpots from '../components/FetchSpots';
 
 const app_name = 'study-knights'
 function buildPath(route)
@@ -81,7 +80,7 @@ class LocationPage extends React.Component
 
     render () {
         let spotDivs = this.state.spots.map((element) => {
-            return <Spot rating={4} name={"test"}/>;
+            return <Spot id={element._id} rating={element.spot_rating} name={element.room} numRatings={element.numRatings}/>;
         })
 
 

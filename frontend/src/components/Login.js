@@ -45,7 +45,6 @@ function Login()
             {
                 var user = {id:res.id, username:res.username, firstName:res.firstName, lastName:res.lastName}
                 localStorage.setItem('user', JSON.stringify(user));
-                console.log(user);
                 setMessage('');
                 window.location.href = '/';
             }
