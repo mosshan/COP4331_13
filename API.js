@@ -224,7 +224,7 @@ exports.setApp = function ( app, client)
       jwt = require('jsonwebtoken');
       var error = '';
       const {token, newPassword} = req.body;
-      
+      const EMAIL_KEY = process.env.EMAIL_KEY;
 
       var results = null;
       try{
