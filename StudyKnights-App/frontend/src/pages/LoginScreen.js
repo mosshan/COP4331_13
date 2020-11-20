@@ -3,7 +3,7 @@ import {ImageBackground, StyleSheet, View, Text, TouchableOpacity, TextInput} fr
 import SignUpBackground from 'C:\\Users\\domin\\Desktop\\code\\StudyKnights\\SignUpBack.png';
 
 
-export default class SignUp extends Component
+export default class LoginScreen extends Component
 {
     state =
     {
