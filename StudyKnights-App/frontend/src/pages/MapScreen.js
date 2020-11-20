@@ -349,10 +349,10 @@ export default class Map extends Component {
   async setAsyncSpots(spots){
     try {
       await AsyncStorage.setItem('currentSpots', JSON.stringify(spots))
-      alert("success storing spots" + JSON.stringify(spots));
+      //alert("success storing spots" + JSON.stringify(spots) + " for " + this.state.chosenMarker);
       return;
     } catch(e) {
-      alert("error when storing spots");
+      console.error('ERROR when storing spots: ', error);
       return;
     }
   }; 
@@ -368,11 +368,10 @@ export default class Map extends Component {
       }
   };
   
-  async setSpots()
+  async setSpots(index)
     {
       this._isMounted = true;
-  
-      var obj = {place_id: this.state.chosenMarker}; //FIXME: when api call works correctly lol
+      var obj = {place_id: index}; //FIXME: when api call works correctly lol
       var js = JSON.stringify(obj);
   
       fetch('https://study-knights.herokuapp.com/api/fetchSpots', {
@@ -387,7 +386,6 @@ export default class Map extends Component {
               .then(res => {
                 if (res.results.length <= 0)
                 {
-                  alert("no spots returned");
                   this.setState({ noSpots: true});
                   return null;
                 }
@@ -406,7 +404,7 @@ export default class Map extends Component {
               })
               .catch(error => 
                 {
-                  //alert(error.toString());
+                  console.error('ERROR when fetching spots: ', error);
                   return null;
                 });  
     }
@@ -426,7 +424,7 @@ export default class Map extends Component {
       // save error
     }
   } 
-  this.setSpots();
+  this.setSpots(index);
   //alert("chosen index is" + index);
   }
 
@@ -447,7 +445,7 @@ export default class Map extends Component {
       }
     } 
 
-    alert("chosen index is neg one");
+    //alert("chosen index is neg one");
   }
 
   FlatListItemSeparator = () => {
