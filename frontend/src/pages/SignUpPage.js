@@ -1,14 +1,12 @@
 import React from 'react';
-// import './../components/SignUp.css';
 import SignUp from '../components/SignUp';
 import PageTitle from '../components/PageTitle';
-
-import './CSS/SignUp.css';
+import './CSS/signuppage.css';
 
 const SignUpPage = () =>
 {
     return(
-      <div className="login-page" >
+      <div className="signup-page" >
         <PageTitle text='Study Knights'/>
         <SignUp />
       </div>

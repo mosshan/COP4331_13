@@ -1,0 +1,11 @@
+.signup-page {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+    background-image: linear-gradient(to left, rgb(2, 2, 2, .75) 8%, transparent), linear-gradient(to top, rgba(2, 2, 2, .75) 2%, transparent), url("../../images/ucfLibrary.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: rgba(128, 128, 128, 0.5);
+}

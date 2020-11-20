@@ -85,7 +85,7 @@ class ChangePassword extends React.Component
                 <input type="password" className="sign-up-input" placeholder="Confirm Password"
                     onChange={this.setConPassword}
                 /><br />
-                <input type="submit" className="register-button" value = "Create Account" 
+                <input type="submit" className="register-button" value = "Submit Changes" 
                     onClick={this.updatePassword} 
                 />
                 <span className="sign-up-result">{this.state.message}</span>

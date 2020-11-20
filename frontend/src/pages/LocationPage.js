@@ -93,7 +93,11 @@ class LocationPage extends React.Component
                     {this.state.isLoading ? 
                         null : 
                             this.state.spots.length > 1 ? 
-                                spotDivs : <h1>No Study Spots Available</h1>
+                                spotDivs : 
+                                    <div className="no-spot-msg">
+                                        <text className="no-spot-msg">No Study Spots Available.</text> <br/>
+                                        <text className="no-spot-msg">Choose another location to view and rate study spots!</text>
+                                    </div>
                          
                     }
                 </ul>
