@@ -15,6 +15,8 @@ export default class SpotScreen extends Component
     state = {
         uID: -1,
         spotInfo: {_id:"-1", spot_id:"-1", room: "-1", numRatings: -1, spot_rating: -1, place_id:-1},	
+        rating: 0,
+        ratingComplete: false,
     }
 
     async loadUserID()
@@ -50,6 +52,10 @@ export default class SpotScreen extends Component
        }
     
    }
+   ratingCompleted( rating ) {
+       this.setState({rating: rating,
+                     ratingComplete: true,});
+  };
 
     render()
     {
@@ -70,9 +76,11 @@ export default class SpotScreen extends Component
                             </View>
                             <View style={styles.infoContainer}>
                                 <Text></Text>
-                                <Text style={styles.rating}>Current Rating: {Math.round((spot.spot_rating + Number.EPSILON) * 100) / 100}</Text>
-                                <Rating imageSize={40} startingValue={spot.spot_rating} style={styles.rating} />
+                                <Text style={styles.rating}>Current Average Rating: {Math.round((spot.spot_rating + Number.EPSILON) * 100) / 100}</Text>
+                                <Rating imageSize={40} startingValue={spot.spot_rating} style={styles.rating} fractions={2} onFinishRating={rating => this.ratingCompleted(rating)}/>
                                 <Text></Text>
+                                
+
                             </View>
                             </View>
                             ]
@@ -88,7 +96,7 @@ export default class SpotScreen extends Component
                                 <View style={styles.ratingContainer}>
                                     <Text></Text>
                                     <Text style={styles.rating}>Current Rating: {Math.round((spot.spot_rating + Number.EPSILON) * 100) / 100}</Text>
-                                    <Rating imageSize={40} type='star' readonly startingValue={spot.spot_rating} style={styles.rating} />
+                                    <Rating imageSize={40} type='star' readonly startingValue={spot.spot_rating} style={styles.rating} fractions={2}/>
                                     <Text></Text>
                                     
                                     <TouchableOpacity
@@ -124,7 +132,7 @@ const styles = StyleSheet.create({
     },
     ratingContainer:
     {
-        backgroundColor: 'rgba(250, 250, 250, .9)',
+        backgroundColor: 'white',
         margin: 15,
     },
     header: {
