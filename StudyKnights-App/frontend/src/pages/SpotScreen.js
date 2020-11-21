@@ -61,24 +61,43 @@ export default class SpotScreen extends Component
                 <ImageBackground source={SignUpBackground} style ={styles.image}>
                     {(userID !== -1)?
                         [//User is logged in, allow rating
+                            <View>
                             <View style={styles.infoContainer}>
                                 <Text style={styles.header}>
                                     {place}
                                 </Text>
-                                <Text style={styles.header}>Study Spot {spotRoom} Rating:</Text>
-                                <Text>{spot.spot_rating}</Text>
-                                <Rating imageSize={40} startingValue={spot.spot_rating}  />
+                                <Text style={styles.header}>Study Spot {spotRoom}</Text>
+                            </View>
+                            <View style={styles.infoContainer}>
                                 <Text></Text>
+                                <Text style={styles.rating}>Current Rating: {Math.round((spot.spot_rating + Number.EPSILON) * 100) / 100}</Text>
+                                <Rating imageSize={40} startingValue={spot.spot_rating} style={styles.rating} />
+                                <Text></Text>
+                            </View>
                             </View>
                             ]
                     :
                         [//User isnt logged in, no rating for u
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.header}>
-                                    {place}
-                                </Text>
-                                <Text style={styles.header}>{spotRoom}</Text>
-                                <Rating imageSize={100} readonly startingValue={spot.spot_rating} />
+                            <View>
+                                <View style={styles.infoContainer}>
+                                    <Text style={styles.header}>
+                                        {place}
+                                    </Text>
+                                    <Text style={styles.header}>Study Spot {spotRoom}</Text>
+                                </View>
+                                <View style={styles.ratingContainer}>
+                                    <Text></Text>
+                                    <Text style={styles.rating}>Current Rating: {Math.round((spot.spot_rating + Number.EPSILON) * 100) / 100}</Text>
+                                    <Rating imageSize={40} type='star' readonly startingValue={spot.spot_rating} style={styles.rating} />
+                                    <Text></Text>
+                                    
+                                    <TouchableOpacity
+                                    onPress={() => {this.props.navigation.navigate('Login')}}>
+                                    <Text style = {styles.button}>
+                                        Login to Rate
+                                    </Text>
+                                </TouchableOpacity>
+                                </View>
                             </View>
                         ]
                     }
@@ -103,12 +122,33 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 201, 4, .9)',
         margin: 15,
     },
+    ratingContainer:
+    {
+        backgroundColor: 'rgba(250, 250, 250, .9)',
+        margin: 15,
+    },
     header: {
         fontFamily: 'monospace',
         textAlignVertical: 'top',
         color: 'black',
         textAlign: "center",
         fontWeight: "bold",
+        fontSize: 18
+      },
+     rating: {
+        fontFamily: 'monospace',
+        textAlignVertical: 'top',
+        color: 'black',
+        textAlign: "center",
         fontSize: 15
+      },
+    
+      button: {
+        fontFamily: 'monospace',
+        textAlign: "center",
+        fontSize: 12,
+        padding: 10,
+        fontWeight: "bold",
+        backgroundColor: 'rgba(255, 201, 4, .9)'
       },
 });
