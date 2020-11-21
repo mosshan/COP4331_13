@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {ImageBackground, StyleSheet, View, Text, TouchableOpacity, TextInput} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import SignUpBackground from 'C:\\Users\\domin\\Desktop\\code\\StudyKnights\\SignUpBack.png';
 
 
@@ -9,9 +10,16 @@ export default class LoginScreen extends Component
     {
       username: '',
       password: '',
+      token: '',
       validUsername: false,
       validPassword: false,
     }
+
+    constructor(props)
+    {
+      super(props);
+      this.load();
+   }
 
     handleUsername = (text) =>
     {
@@ -27,6 +35,36 @@ export default class LoginScreen extends Component
       this.state.validUsername = !(this.state.username === '');
       this.state.validPassword = !(this.state.password === '');
     };
+
+   const save = async() =>
+   {
+      try
+      {
+         this.setState({ token: responseJSON.id})
+         await AsyncStorage.setItem('token', responseJSON.id);
+      }
+      catch (e)
+      {
+         console.log(e);
+      }
+   }
+
+   const load = async() =>
+   {
+      try
+      {
+         const value = await AsyncStorage.getItem('token');
+
+         if (value !== null)
+         {
+            this.setState({ token: value });
+         }
+      }
+      catch(e)
+      {
+         console.log(e);
+      }
+   }
 
     login = () =>
     {
@@ -54,8 +92,8 @@ export default class LoginScreen extends Component
              }
              else
              {
-               //this.props.navigation.navigate('Home');
-               alert('else');
+               this.save();
+               this.props.navigation.navigate('Home');
              }
 
           })
@@ -124,7 +162,7 @@ export default class LoginScreen extends Component
                              borderWidth: 10,
                            }}
                            onPress={
-                           () => {this.props.navigation.navigate('SignUpScreen')}
+                           () => {this.props.navigation.navigate('SignUp')}
                           }>
                            <Text style = {styles.button}>
                              Register
