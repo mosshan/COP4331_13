@@ -4,6 +4,7 @@ import {View, StyleSheet, Text , Dimensions, TouchableOpacity, TouchableWithoutF
 import MapView, {Callout, Marker}  from "react-native-maps";	
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 export default class Map extends Component {	
   _isMounted = false;
 
@@ -346,28 +347,6 @@ export default class Map extends Component {
   };	
   
   
-  async setAsyncSpots(spots){
-    try {
-      await AsyncStorage.setItem('currentSpots', JSON.stringify(spots))
-      //alert("success storing spots" + JSON.stringify(spots) + " for " + this.state.chosenMarker);
-      return;
-    } catch(e) {
-      console.error('ERROR when storing spots: ', error);
-      return;
-    }
-  }; 
-  
-  async getSpots()
-  {
-      try {
-        return await AsyncStorage.getItem('currentSpots');
-      } catch(e) {
-        // read error
-        console.error('ERROR: no place chosen: ', error);
-        return -1;
-      }
-  };
-  
   async setSpots(index)
     {
       this._isMounted = true;
@@ -393,7 +372,7 @@ export default class Map extends Component {
                 res.results.forEach(element => {
                     spots.push(element);
                 });
-                this.setAsyncSpots(spots);
+    
                 if(this._isMounted)
                 {
                   this.setState({spotList: spots,
@@ -416,14 +395,7 @@ export default class Map extends Component {
       chosenMarker: index,
       mapHeight: Dimensions.get('window').height - 300,
     });
-    
-  this.setStringValue = async (index) => {
-    try {
-      await AsyncStorage.setItem('markerIndex', index)
-    } catch(e) {
-      // save error
-    }
-  } 
+
   this.setSpots(index);
   //alert("chosen index is" + index);
   }
@@ -437,16 +409,19 @@ export default class Map extends Component {
       noSpots: true,
     });
 
-    this.setStringValue = async () => {
-      try {
-        await AsyncStorage.setItem('markerIndex', -1)
-      } catch(e) {
-        // save error
-      }
-    } 
-
     //alert("chosen index is neg one");
   }
+
+  async navigateToSpot(item)
+  {
+    try {
+      await AsyncStorage.setItem("chosenSpotID", item._id);
+    } catch (error) {
+      alert("Navigrate" + error);
+    }
+    this.props.navigation.navigate("SpotPage");
+  }
+
 
   FlatListItemSeparator = () => {
     return (
@@ -511,11 +486,14 @@ export default class Map extends Component {
               !this.state.noSpots?
               [
               <View>
+                
               <View style = {styles.item}>
                 <FlatList
                   data={this.state.spotList}
                   renderItem={({ item }) => (
-                      <Text style={styles.spotRoom}>{item.room}</Text>
+                      <TouchableWithoutFeedback onPress={ () => this.navigateToSpot(item)}>
+                        <Text style={styles.spotRoom}>{item.room}</Text>
+                      </TouchableWithoutFeedback>
                      )}
                   contentContainerStyle={{ paddingBottom: 530}}
                   ItemSeparatorComponent = { this.FlatListItemSeparator }
@@ -570,7 +548,7 @@ export default class Map extends Component {
 
 const styles = StyleSheet.create({	
   container: {
-    flex: 3,
+    flex: 1,
     backgroundColor: 'rgba(52, 52, 52, 1.0)',
   },
   ratingContainer:
