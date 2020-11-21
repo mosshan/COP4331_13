@@ -27,6 +27,7 @@ class Spot extends React.Component
          rated: false,
          disabled: true,
          ratingMessage: this.setInitMessage(),
+         avgRating: props.rating,
       };
    }
 
@@ -105,12 +106,16 @@ class Spot extends React.Component
          const response = await fetch(buildPath('api/rate'),
                {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
          var res = JSON.parse(await response.text());
-
+         
          console.log(res);
          if (res.error != '')
          {
                console.log(res.error);
                return false;
+         }
+         if (res.average != 'undefined')
+         {
+            this.setState({avgRating:res.average});
          }
          return true;
 
@@ -128,7 +133,10 @@ class Spot extends React.Component
       return(
          <div >
             <div className="spot-item">
-               <text id="name" className="spot-name" >{"Room " + this.state.name}</text>
+               <div className="spot-title-container">
+                  <text id="name" className="spot-name" >{"Room " + this.state.name}</text>
+                  <text className="spot-rating">{"Avg: " + this.state.avgRating.toFixed(2)}</text>
+               </div>
                <div id="rating-container" className="rating-container">
                
                   <Rating id="rating-mech" className="rating-stars"

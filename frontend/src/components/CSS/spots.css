@@ -52,6 +52,14 @@
     color: black;
 }
 
+.spot-title-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .no-spot-msg {
     text-align: center;
     font-size: 15px;
