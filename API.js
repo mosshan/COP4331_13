@@ -137,12 +137,12 @@ exports.setApp = function ( app, client)
       }
 
       //if we updated we have to update the new average
+      var ratingAverage = 0
       if(result != null){
         try{
           const db = client.db();
           
           const results = await db.collection('Ratings').find({spot_id:ospot_id}).toArray();
-          console.log(results);
           var ratingsSum = 0;
           for (i=0;i < results.length;i++){
             ratingsSum += results[i].rating;
@@ -154,7 +154,7 @@ exports.setApp = function ( app, client)
         }
       }
       
-      var ret = {error:error};
+      var ret = {error:error, average:ratingAverage};
       res.status(200).json(ret);
     });
 
