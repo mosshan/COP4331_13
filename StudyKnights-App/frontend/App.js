@@ -1,3 +1,4 @@
+
 // App.js
 import React from 'react';
 import { StyleSheet} from 'react-native';
@@ -7,6 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import SignUpScreen from './src/pages/SignUpScreen';
 import LoginScreen from './src/pages/LoginScreen';
 import MapScreen from './src/pages/MapScreen';
+import SpotScreen from './src/pages/SpotScreen';
 
 export default class App extends React.Component {
   render() {
@@ -22,10 +24,11 @@ const Stack = createStackNavigator();
 
 function MyStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Map">
       <Stack.Screen name="Map" component={MapScreen} />
       <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="SpotPage" component={SpotScreen} />
     </Stack.Navigator>
   );
 }
