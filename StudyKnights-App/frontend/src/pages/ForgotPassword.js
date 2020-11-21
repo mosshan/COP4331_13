@@ -9,6 +9,7 @@ export default class ForgotPassword extends Component
     {
       username: '',
       email: '',
+      errorText: '',
       validUsername: false,
       validEmail: false,
     }
@@ -44,11 +45,11 @@ export default class ForgotPassword extends Component
 
          if(responseJSON.error == 'username or email not found')
          {
-            alert('Invalid username and email combination.');
+            this.setState( {errorText: 'Invalid username and email combination.'} );
          }
          else
          {
-           alert('A password reset email has been sent.');
+           this.setState({ errorText: 'A password reset email has been sent.'} );
            this.props.navigation.navigate('Login');
          }
 
@@ -60,15 +61,15 @@ export default class ForgotPassword extends Component
       }
       else if (!this.state.validEmail && !this.state.validUsername)
       {
-         alert('Please input your username and email.');
+            this.setState({ errorText: 'Please input your username and email.' });
       }
       else if(!this.state.validEmail)
       {
-         alert('Please input your email.');
+         this.setState({ errorText: 'Please input your email.' });
       }
       else if (!this.state.validUsername)
       {
-         alert('Please input your username.');
+         this.setState({ errorText: 'Please input your username.' });
       }
    }
 
@@ -83,7 +84,6 @@ export default class ForgotPassword extends Component
         return(
             <View style={styles.container}>
                 <ImageBackground source={SignUpBackground} style ={styles.image}>
-                  <Text style={styles.text} ></Text>
                   <Text style={styles.text} >Password Reset</Text>
                   <Text style={styles.text} ></Text>
 
@@ -99,6 +99,8 @@ export default class ForgotPassword extends Component
                         underlineColorAndroid='white'
                         placeholder="Email"
                         onChangeText = {this.handleEmail} />
+
+                  <Text style={styles.invisText}>{this.state.errorText}</Text>
 
                         <View style = {styles.buttonContainer}>
                          <TouchableOpacity
@@ -178,5 +180,9 @@ const styles = StyleSheet.create({
       padding: 12,
       fontWeight: "bold",
       backgroundColor: 'rgba(255, 201, 4, .9)'
+    },
+    invisText: {
+      color : 'red',
+      textAlign: 'center'
     }
   });
