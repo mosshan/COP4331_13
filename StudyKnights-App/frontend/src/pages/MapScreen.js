@@ -485,7 +485,7 @@ export default class Map extends Component {
                 </View>
 
                 <View>
-                  <Text style={styles.description}>{this.state.markers[this.state.chosenMarker].title} Study Spots</Text>  
+                  <Text style={styles.description}>{this.state.markers[this.state.chosenMarker].title} Study Spots</Text>
                 </View>
 
               </View>
@@ -493,8 +493,8 @@ export default class Map extends Component {
               !this.state.noSpots?
               [
               <View>
-                
-              <View style = {styles.item}>
+                <Text style={styles.info}> Click a Spot to View Rating</Text>  
+              <View style = {styles.item}> 
                 <FlatList
                   data={this.state.spotList}
                   renderItem={({ item }) => (
@@ -502,7 +502,7 @@ export default class Map extends Component {
                         <Text style={styles.spotRoom}>{item.room}</Text>
                       </TouchableWithoutFeedback>
                      )}
-                  contentContainerStyle={{ paddingBottom: 530}}
+                  contentContainerStyle={{ paddingBottom: 550}}
                   ItemSeparatorComponent = { this.FlatListItemSeparator }
                   keyExtractor={item => item.spot_id.toString()}
                 /> 
@@ -620,5 +620,12 @@ const styles = StyleSheet.create({
     padding: 1,
     fontSize: 1,
     color: 'rgba(0, 0, 0, 0)'
+  },
+  info:
+  {
+    fontSize: 10,	
+    fontFamily: 'monospace',
+    color: 'white',
+    alignSelf:'center',
   }
 });
