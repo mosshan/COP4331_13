@@ -2,22 +2,7 @@ import React, {Component} from 'react';
 import {ImageBackground, StyleSheet, View, Text, TouchableOpacity, TextInput} from 'react-native';
 import SignUpBackground from '../../assets/SignUpBack.png';
 
-/*
-const app_name = 'study-knights'
-function buildPath(route)
-{
-    if (process.env.NODE_ENV === 'production') 
-    {
-        return 'https://study-knights.herokuapp.com' + route;
-    }
-    else
-    {        
-        return 'http://localhost:5000/' + route;
-    }
-}
-*/
-
-export default class SignUp extends Component 
+export default class SignUp extends Component
 {
     // Holds current vals
     state = {
@@ -68,13 +53,13 @@ export default class SignUp extends Component
         {
           alert('email: ' + email + ' password: ' + pass + ' username: ' + user );
           //Need to actually register now
-          
+
           //Create Json object
           var obj = {userName: this.state.username, password: this.state.password, email: this.state.email};
           var js = JSON.stringify(obj);
 
           // Try Registering w API
-          
+
           fetch('https://study-knights.herokuapp.com/api/register', {
             method:'POST',
             headers:{
@@ -84,27 +69,53 @@ export default class SignUp extends Component
             body:js,
           })
             .then(response => response.json())
-            .then(responseJson => {
-              alert(responseJson);
-              
+            .then(responseJson =>
+            {
               if(responseJson.error !== '')
               {
                 alert('Username already taken.');
               }
               else
               {
-                //Registration is successful
-                alert('Registration was successful');
                 setRegistrationStatus(true);
+
+                var objV = {username: this.state.username, email: this.state.email};
+                var jsV = JSON.stringify(obj);
+
+                fetch('https://study-knights.herokuapp.com/api/sendVerification', {
+                     method:'POST',
+                     headers:{
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                  },
+                  body:jsV,
+                    })
+                  .then(responseV => responseV.json())
+                  .then(responseVJson =>
+                  {
+
+                     if(responseVJson.error !== '')
+                     {
+                        alert('Username or email not found.');
+                     }
+                     else
+                     {
+                        alert('Registration email sent.');
+                        this.props.navigation.navigate('Login');
+                     }
+
+                  })
+                  .catch(error =>
+                  {
+                     console.error(error);
+                  });
               }
 
             })
-            .catch(error => 
-              {
-                console.error(error);
-              });
-
-          //this.props.navigation.navigate('Login');
+            .catch(error =>
+            {
+               console.error(error);
+            });
         }
         if(!this.state.validPassword)
         {
@@ -138,44 +149,44 @@ export default class SignUp extends Component
 
     };
 
-    render() 
+    render()
     {
-     
+
         return(
             <View style={styles.container}>
                 <ImageBackground source={SignUpBackground} style ={styles.image}>
-                {!this.state.registrationStatus? 
+                {!this.state.registrationStatus?
                   <View>
                     <Text style={styles.text} ></Text>
                     <Text style={styles.text} >Sign Up</Text>
                     <Text style={styles.text} ></Text>
 
-                    <TextInput style={styles.input} 
+                    <TextInput style={styles.input}
                           placeholderTextColor='white'
-                          underlineColorAndroid='white' 
+                          underlineColorAndroid='white'
                           placeholder="Email"
-                          onChangeText = {this.handleEmail} /> 
-                          
-                    <TextInput style={styles.input} 
+                          onChangeText = {this.handleEmail} />
+
+                    <TextInput style={styles.input}
                           placeholderTextColor='white'
-                          underlineColorAndroid='white' 
+                          underlineColorAndroid='white'
                           placeholder="Username"
-                          onChangeText = {this.handleUsername} /> 
+                          onChangeText = {this.handleUsername} />
 
                     <TextInput style={styles.input}
                           secureTextEntry={true}
                           placeholderTextColor='white'
-                          underlineColorAndroid='white' 
+                          underlineColorAndroid='white'
                           placeholder="Password"
-                          onChangeText = {this.handlePassword} /> 
+                          onChangeText = {this.handlePassword} />
 
                     <TextInput style={styles.input}
                           secureTextEntry={true}
                           placeholderTextColor='white'
-                          underlineColorAndroid='white' 
+                          underlineColorAndroid='white'
                           placeholder="Confirm Password"
-                          onChangeText = {this.handlePasswordCheck} />  
-                    
+                          onChangeText = {this.handlePasswordCheck} />
+
                     <View style = {styles.buttonContainer}>
                       <TouchableOpacity
                         style={{
@@ -191,7 +202,7 @@ export default class SignUp extends Component
                         </Text>
                       </TouchableOpacity>
                     </View>
-                      
+
                     <View style = {styles.buttonContainer}>
                       <TouchableOpacity
                         style={{
