@@ -9,6 +9,7 @@ import SignUpScreen from './src/pages/SignUpScreen';
 import LoginScreen from './src/pages/LoginScreen';
 import MapScreen from './src/pages/MapScreen';
 import SpotScreen from './src/pages/SpotScreen';
+import ForgotPassword from './src/pages/ForgotPassword
 
 export default class App extends React.Component {
   render() {
@@ -29,6 +30,7 @@ function MyStack() {
       <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="SpotPage" component={SpotScreen} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
     </Stack.Navigator>
   );
 }
