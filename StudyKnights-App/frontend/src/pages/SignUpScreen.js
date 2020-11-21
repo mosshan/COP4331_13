@@ -17,6 +17,7 @@ export default class SignUp extends Component
       validConfirm: false,
       registrationStatus: false,
       message:'',
+      errorText: '',
     }
 
     // set Entered Variables
@@ -51,7 +52,7 @@ export default class SignUp extends Component
 
         if(this.state.validPassword && this.state.validEmail && this.state.validUsername)
         {
-          alert('email: ' + email + ' password: ' + pass + ' username: ' + user );
+          //alert('email: ' + email + ' password: ' + pass + ' username: ' + user );
           //Need to actually register now
 
           //Create Json object
@@ -73,7 +74,7 @@ export default class SignUp extends Component
             {
               if(responseJson.error !== '')
               {
-                alert('Username already taken.');
+                this.setState({ errorText: 'Username is already taken.' });
               }
               else
               {
@@ -96,11 +97,11 @@ export default class SignUp extends Component
 
                      if(responseVJson.error !== '')
                      {
-                        alert('Username or email not found.');
+                        this.setState({ errorText: 'Username or email not found.' });
                      }
                      else
                      {
-                        alert('Registration email sent.');
+                        this.setState({ errorText: 'Registration email sent.' });
                         this.props.navigation.navigate('Login');
                      }
 
@@ -117,25 +118,9 @@ export default class SignUp extends Component
                console.error(error);
             });
         }
-        if(!this.state.validPassword)
+        else
         {
-          alert('Please enter a password');
-        }
-        if(!this.state.validPasswordCheck)
-        {
-          alert('Passwords are not matching');
-        }
-        if(!this.state.validConfirm)
-        {
-          alert('Please confirm your password');
-        }
-        if(!this.state.validEmail)
-        {
-          alert('Please enter a valid email');
-        }
-        if(!this.state.validUsername)
-        {
-          alert('Please enter a username');
+           this.setState({ errorText: 'Please fill out all fields.' });
         }
     }
 
@@ -186,6 +171,8 @@ export default class SignUp extends Component
                           underlineColorAndroid='white'
                           placeholder="Confirm Password"
                           onChangeText = {this.handlePasswordCheck} />
+            
+                    <Text style={styles.invisText}>{this.state.errorText}</Text>
 
                     <View style = {styles.buttonContainer}>
                       <TouchableOpacity
@@ -270,5 +257,9 @@ const styles = StyleSheet.create({
       padding: 12,
       fontWeight: "bold",
       backgroundColor: 'rgba(255, 201, 4, .9)'
+    },
+    invisText: {
+      color : 'red',
+      textAlign: 'center'
     }
   });
