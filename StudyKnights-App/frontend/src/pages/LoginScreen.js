@@ -11,6 +11,7 @@ export default class LoginScreen extends Component
       username: '',
       password: '',
       token: '',
+      errorText: '',
       validUsername: false,
       validPassword: false,
     }
@@ -88,7 +89,7 @@ export default class LoginScreen extends Component
 
              if(responseJSON.id <= 0)
              {
-              alert('Invalid username and password combination.');
+              this.setState({ errorText: 'Invalid username and password combination.' });
              }
              else
              {
@@ -104,15 +105,15 @@ export default class LoginScreen extends Component
            }
            else if(!this.state.validUsername && !this.state.validPassword)
            {
-             alert('Please enter a username and password');
+             this.setState({ errorText: 'Please enter a username and password.' });
            }
            else if(!this.state.validPassword)
            {
-             alert('Please enter a password');
+             this.setState({ errorText: 'Please enter a password.' });
            }
            else if(!this.state.validUsername)
            {
-             alert('Please enter a username');
+             this.setState({ errorText: 'Please enter a username.' });
            }
        }
 
@@ -121,7 +122,6 @@ export default class LoginScreen extends Component
         return(
             <View style={styles.container}>
                 <ImageBackground source={SignUpBackground} style ={styles.image}>
-                  <Text style={styles.text} ></Text>
                   <Text style={styles.text} >Login</Text>
                   <Text style={styles.text} ></Text>
 
@@ -137,6 +137,8 @@ export default class LoginScreen extends Component
                         underlineColorAndroid='white'
                         placeholder="Password"
                         onChangeText = {this.handlePassword} />
+            
+                <Text style={styles.invisText}>{this.state.errorText}</Text>
 
                         <View style = {styles.buttonContainer}>
                          <TouchableOpacity
@@ -232,5 +234,9 @@ const styles = StyleSheet.create({
       padding: 12,
       fontWeight: "bold",
       backgroundColor: 'rgba(255, 201, 4, .9)'
+    },
+    invisText: {
+      color : 'red',
+      textAlign: 'center'
     }
   });
