@@ -1,10 +1,10 @@
 .spot-container {
-    padding-left: 20px;
+    padding-left: 50px;
     padding-bottom: 20px;
-    padding-right: 20px;
-    margin-top: 20px;
+    padding-right: 50px;
+    margin-top: 50px;
     min-height: 50vh;
-    min-width: 25vw;
+    min-width: 20vw;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -50,6 +50,11 @@
 .spot-rating {
     font-size: 15px;
     color: black;
+}
+
+.no-spot-msg {
+    text-align: center;
+    font-size: 15px;
 }
 
 .rating-container {

@@ -1,6 +1,6 @@
 // Mapscreen.js	
 import React, { Component } from 'react';	
-import {View, StyleSheet, Text , Dimensions, TouchableOpacity, FlatList} from 'react-native';	
+import {View, StyleSheet, Text , Dimensions, TouchableOpacity, TouchableWithoutFeedback, FlatList, ScrollView} from 'react-native';	
 import MapView, {Callout, Marker}  from "react-native-maps";	
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -349,10 +349,10 @@ export default class Map extends Component {
   async setAsyncSpots(spots){
     try {
       await AsyncStorage.setItem('currentSpots', JSON.stringify(spots))
-      alert("success storing spots" + JSON.stringify(spots));
+      //alert("success storing spots" + JSON.stringify(spots) + " for " + this.state.chosenMarker);
       return;
     } catch(e) {
-      alert("error when storing spots");
+      console.error('ERROR when storing spots: ', error);
       return;
     }
   }; 
@@ -368,11 +368,10 @@ export default class Map extends Component {
       }
   };
   
-  async setSpots()
+  async setSpots(index)
     {
       this._isMounted = true;
-  
-      var obj = {place_id: this.state.chosenMarker}; //FIXME: when api call works correctly lol
+      var obj = {place_id: index}; //FIXME: when api call works correctly lol
       var js = JSON.stringify(obj);
   
       fetch('https://study-knights.herokuapp.com/api/fetchSpots', {
@@ -387,7 +386,6 @@ export default class Map extends Component {
               .then(res => {
                 if (res.results.length <= 0)
                 {
-                  alert("no spots returned");
                   this.setState({ noSpots: true});
                   return null;
                 }
@@ -406,7 +404,7 @@ export default class Map extends Component {
               })
               .catch(error => 
                 {
-                  //alert(error.toString());
+                  console.error('ERROR when fetching spots: ', error);
                   return null;
                 });  
     }
@@ -426,7 +424,7 @@ export default class Map extends Component {
       // save error
     }
   } 
-  this.setSpots();
+  this.setSpots(index);
   //alert("chosen index is" + index);
   }
 
@@ -447,7 +445,7 @@ export default class Map extends Component {
       }
     } 
 
-    alert("chosen index is neg one");
+    //alert("chosen index is neg one");
   }
 
   FlatListItemSeparator = () => {
@@ -512,15 +510,21 @@ export default class Map extends Component {
             {
               !this.state.noSpots?
               [
+              <View>
               <View style = {styles.item}>
                 <FlatList
                   data={this.state.spotList}
                   renderItem={({ item }) => (
-                    <Text style={styles.spotRoom}>{item.room}</Text> )}
+                      <Text style={styles.spotRoom}>{item.room}</Text>
+                     )}
+                  contentContainerStyle={{ paddingBottom: 530}}
                   ItemSeparatorComponent = { this.FlatListItemSeparator }
                   keyExtractor={item => item.spot_id.toString()}
                 /> 
+                <Text style = {styles.bottomSpace}> </Text>
+                <Text>  </Text>
               </View> 
+              </View>
               ]
               :
               [
@@ -566,7 +570,7 @@ export default class Map extends Component {
 
 const styles = StyleSheet.create({	
   container: {
-    flex: 1,
+    flex: 3,
     backgroundColor: 'rgba(52, 52, 52, 1.0)',
   },
   ratingContainer:
@@ -606,6 +610,8 @@ const styles = StyleSheet.create({
     fontSize: 25,	
     fontFamily: 'monospace',
     color: 'white',
+   // height: 500,
+    //flex: 2,
   },
   spotRoom: {	
     alignSelf:'center',
@@ -613,4 +619,10 @@ const styles = StyleSheet.create({
     fontFamily: 'monospace',	
     color: 'rgba(52, 52, 52, 1.0)',
   },
+  bottomSpace:
+  {
+    padding: 1,
+    fontSize: 1,
+    color: 'rgba(0, 0, 0, 0)'
+  }
 });

@@ -223,8 +223,8 @@ exports.setApp = function ( app, client)
       db = client.db();
       jwt = require('jsonwebtoken');
       var error = '';
-      const {token, password} = req.body;
-      
+      const {token, password} = req.body
+      const EMAIL_KEY = process.env.EMAIL_KEY;
 
       var results = null;
       try{

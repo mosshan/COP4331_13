@@ -27,7 +27,36 @@ export default class ForgotPassword extends Component
       this.validateInput();
       if(this.state.validEmail && this.state.validUsername)
       {
-         alert('noice');
+         var obj = {username: this.state.username, email: this.state.email};
+         var js = JSON.stringify(obj);
+
+         fetch('https://study-knights.herokuapp.com/api/requestReset', {
+           method:'POST',
+           headers:{
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+                   },
+           body:js,
+         })
+         .then(response => response.json())
+         .then(responseJSON =>
+         {
+
+         if(responseJSON.error == 'username or email not found')
+         {
+            alert('Invalid username and email combination.');
+         }
+         else
+         {
+           alert('A password reset email has been sent.');
+           this.props.navigation.navigate('Login');
+         }
+
+      })
+      .catch(error =>
+         {
+          console.error(error);
+         });
       }
       else if (!this.state.validEmail && !this.state.validUsername)
       {

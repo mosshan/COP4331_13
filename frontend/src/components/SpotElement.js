@@ -25,9 +25,13 @@ class Spot extends React.Component
          name: props.name,
          numRatings: props.numRatings,
          rated: false,
-         disabled: this.setDisabled(),
+         disabled: true,
          ratingMessage: this.setInitMessage(),
       };
+   }
+
+   componentDidMount = () => {
+      this.setDisabled();
    }
 
    setInitMessage = function() {
@@ -81,7 +85,7 @@ class Spot extends React.Component
       }
    }
 
-   subitRating = async (newValue) => {
+   submitRating = async (newValue) => {
       let id;
       try {
          id = JSON.parse(localStorage.user).id;
@@ -123,7 +127,7 @@ class Spot extends React.Component
    render() {
       return(
          <div >
-            <div className="spot-item" onLoad={this.setDisabled}>
+            <div className="spot-item">
                <text id="name" className="spot-name" >{"Room " + this.state.name}</text>
                <div id="rating-container" className="rating-container">
                
@@ -135,7 +139,7 @@ class Spot extends React.Component
                         this.setState({rated: true, disabled: true});
                         this.setState({ratingMessage:<text>Rating Submitted!</text>})
                         console.log(this.state.id);
-                        this.subitRating(newValue);
+                        this.submitRating(newValue);
                      }}
                      precision={0.5}
                      disabled={this.state.disabled}
