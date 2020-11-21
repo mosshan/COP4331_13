@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {ImageBackground, StyleSheet, View, Text, TouchableOpacity, TextInput} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SignUpBackground from 'C:\\Users\\domin\\Desktop\\code\\StudyKnights\\SignUpBack.png';
+import SignUpBackground from '../../assets/SignUpBack.png';
 
 
 export default class LoginScreen extends Component
@@ -36,7 +36,7 @@ export default class LoginScreen extends Component
       this.state.validPassword = !(this.state.password === '');
     };
 
-   const save = async() =>
+   async save()
    {
       try
       {
@@ -49,7 +49,7 @@ export default class LoginScreen extends Component
       }
    }
 
-   const load = async() =>
+   async load()
    {
       try
       {
@@ -66,7 +66,7 @@ export default class LoginScreen extends Component
       }
    }
 
-    login = () =>
+    async login()
     {
            this.validateInput();
            if(this.state.validPassword && this.state.validUsername)
@@ -93,7 +93,7 @@ export default class LoginScreen extends Component
              else
              {
                this.save();
-               this.props.navigation.navigate('Home');
+               this.props.navigation.navigate('Map', {userID: JSON.stringify(responseJSON.id)} );
              }
 
           })
