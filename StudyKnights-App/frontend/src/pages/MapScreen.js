@@ -7,6 +7,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class Map extends Component {	
   _isMounted = false;
+  constructor(props)
+    {
+        super(props);
+    }
 
   state = {
     mapHeight: Dimensions.get('window').height - 150,
@@ -350,7 +354,7 @@ export default class Map extends Component {
   async setSpots(index)
     {
       this._isMounted = true;
-      var obj = {place_id: index}; //FIXME: when api call works correctly lol
+      var obj = {place_id: index}; 
       var js = JSON.stringify(obj);
   
       fetch('https://study-knights.herokuapp.com/api/fetchSpots', {
@@ -397,7 +401,7 @@ export default class Map extends Component {
     });
 
   this.setSpots(index);
-  //alert("chosen index is" + index);
+  
   }
 
   closeRating()
@@ -409,17 +413,11 @@ export default class Map extends Component {
       noSpots: true,
     });
 
-    //alert("chosen index is neg one");
   }
 
-  async navigateToSpot(item)
+  async navigateToSpot(item, uID, placeTitle)
   {
-    try {
-      await AsyncStorage.setItem("chosenSpotID", item._id);
-    } catch (error) {
-      alert("Navigrate" + error);
-    }
-    this.props.navigation.navigate("SpotPage");
+    this.props.navigation.navigate('SpotPage', {spot: item, userID: uID, place: placeTitle } );
   }
 
 
@@ -435,6 +433,15 @@ export default class Map extends Component {
   }
 
   render() {	
+    let uID;
+    if(this.props.route.params === undefined )
+    {
+      uID = -1;
+    }
+    else{
+      uID = this.props.route.params;
+    }
+   
     return (
       <View style={styles.container}>
         <MapView	
@@ -491,7 +498,7 @@ export default class Map extends Component {
                 <FlatList
                   data={this.state.spotList}
                   renderItem={({ item }) => (
-                      <TouchableWithoutFeedback onPress={ () => this.navigateToSpot(item)}>
+                      <TouchableWithoutFeedback onPress={ () => this.navigateToSpot(item, uID, this.state.markers[this.state.chosenMarker].title)}>
                         <Text style={styles.spotRoom}>{item.room}</Text>
                       </TouchableWithoutFeedback>
                      )}
@@ -517,23 +524,34 @@ export default class Map extends Component {
           ]
         : 
         [
-          <View style={styles.noneChosenContainer}>
-              <TouchableOpacity
-                onPress={() => {this.props.navigation.navigate('Login')}}>
-                <Text style = {styles.button}>
-                  Login
-                </Text>
-              </TouchableOpacity>
+          <View>
+          {(uID < 0 )?
+            [ <View style={styles.noneChosenContainer}>
+                <TouchableOpacity
+                  onPress={() => {this.props.navigation.navigate('Login')}}>
+                  <Text style = {styles.button}>
+                    Login
+                  </Text>
+                </TouchableOpacity>
 
-              <Text>   </Text>
-              <TouchableOpacity
-                onPress={() => {this.props.navigation.navigate('SignUp')}}>
-                <Text style = {styles.button}>
-                  Register
-                </Text>
-              </TouchableOpacity>
-              <Text>   </Text>
-              <Text style={styles.noneChosen} >Click on a Pin to View Study Spots</Text> 
+                <Text>   </Text>
+                <TouchableOpacity
+                  onPress={() => {this.props.navigation.navigate('SignUp')}}>
+                  <Text style = {styles.button}>
+                    Register
+                  </Text>
+                </TouchableOpacity>
+                <Text>   </Text>
+                <Text style={styles.noneChosen} >Click on a Pin to View Study Spots</Text> 
+              </View>
+              ]
+            :
+            [
+              <View>
+                 <Text style={styles.noneChosen} >Click on a Pin to View Study Spots</Text> 
+              </View>
+            ]
+          }
           </View>
         ]}	
 
