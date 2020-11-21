@@ -77,10 +77,10 @@ export default class SignUp extends Component
               }
               else
               {
-                setRegistrationStatus(true);
+                //setRegistrationStatus(true);
 
                 var objV = {username: this.state.username, email: this.state.email};
-                var jsV = JSON.stringify(obj);
+                var jsV = JSON.stringify(objV);
 
                 fetch('https://study-knights.herokuapp.com/api/sendVerification', {
                      method:'POST',
