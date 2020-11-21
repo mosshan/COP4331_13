@@ -223,13 +223,13 @@ exports.setApp = function ( app, client)
       db = client.db();
       jwt = require('jsonwebtoken');
       var error = '';
-      const {token, newPassword} = req.body;
+      const {token, password} = req.body;
       
 
       var results = null;
       try{
         const {username, email} = jwt.verify(token, EMAIL_KEY)
-        await db.collection('Users').updateOne({username:username, email:email},{$set:{password:newPassword}});
+        await db.collection('Users').updateOne({username:username, email:email},{$set:{password:password}});
       } catch (e){
         error = e.toString();
       }
