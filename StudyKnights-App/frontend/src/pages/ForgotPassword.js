@@ -49,7 +49,7 @@ export default class ForgotPassword extends Component
          else
          {
            alert('A password reset email has been sent.');
-           this.props.navigation.navigate('LoginScreen');
+           this.props.navigation.navigate('Login');
          }
 
       })
