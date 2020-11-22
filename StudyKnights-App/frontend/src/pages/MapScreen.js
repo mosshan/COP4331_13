@@ -542,6 +542,7 @@ export default class Map extends Component {
                   </Text>
                 </TouchableOpacity>
                 <Text>   </Text>
+                <Text></Text>
                 <Text style={styles.noneChosen} >Click on a Pin to View Study Spots</Text> 
               </View>
               ]
