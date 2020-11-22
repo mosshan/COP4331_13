@@ -17,6 +17,7 @@ export default class SpotScreen extends Component
         spotInfo: {_id:"-1", spot_id:"-1", room: "-1", numRatings: -1, spot_rating: -1, place_id:-1},	
         rating: 0,
         ratingComplete: false,
+        responseSubmitted: false,
     }
 
     async loadUserID()
@@ -52,15 +53,50 @@ export default class SpotScreen extends Component
        }
     
    }
-   ratingCompleted( rating ) {
+   ratingCompleted( rating, spot, userID ) {
        this.setState({rating: rating,
-                     ratingComplete: true,});
+                     ratingComplete: true,
+                     spotInfo: spot, 
+                    uID: userID});
   };
+
+  async rate()
+  {
+    var obj = {spot_id: this.state.spotInfo.spot_id, user_id: this.state.uID, rating: this.state.rating};
+    var js = JSON.stringify(obj);
+
+
+             fetch('https://study-knights.herokuapp.com/api/rate', {
+               method:'POST',
+               headers:{
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                       },
+               body:js,
+             })
+             .then(response => response.json())
+             .then(responseJSON => {
+                 if(responseJSON.error !== ''){
+                    console.error(error);
+                 }
+                 else{
+                     this.setState({responseSubmitted: true});
+
+
+                 }
+              })
+              .catch(error =>
+                {
+                 console.error(error);
+                });
+    }
+  
 
     render()
     {
         const { spot, userID, place } = this.props.route.params;
         //this.setInfo(spot, userID);
+        const uID = userID.userID;
         const spotRoom = spot.room;
         return(
             <View style={styles.container}>
@@ -77,10 +113,40 @@ export default class SpotScreen extends Component
                             <View style={styles.infoContainer}>
                                 <Text></Text>
                                 <Text style={styles.rating}>Current Average Rating: {Math.round((spot.spot_rating + Number.EPSILON) * 100) / 100}</Text>
-                                <Rating imageSize={40} startingValue={spot.spot_rating} style={styles.rating} fractions={2} onFinishRating={rating => this.ratingCompleted(rating)}/>
+                                <Rating imageSize={40} startingValue={spot.spot_rating} style={styles.rating} fractions={2} onFinishRating={rating => this.ratingCompleted(rating, spot, uID)}/>
                                 <Text></Text>
-                                
-
+                                {this.state.ratingComplete && !this.state.responseSubmitted?
+                                [   <View>
+                                        <TouchableOpacity
+                                            onPress={() => {this.rate()}}>
+                                            <Text style = {styles.button}>
+                                                Submit/Update Your Rating
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                ]
+                                :
+                                [   
+                                ]
+                                }
+                                {this.state.responseSubmitted?
+                                [
+                                    <View>
+                                    <TouchableOpacity
+                                        onPress={() => {this.rate() }}>
+                                        <Text style = {styles.button}>
+                                            Update Your Rating
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <Text style = {styles.seperate}>                           </Text>
+                                  
+                                        <Text style = {styles.button}>Rating submitted!</Text>
+                                    </View>
+                                ]
+                                :
+                                [   
+                                ]
+                                }
                             </View>
                             </View>
                             ]
@@ -150,6 +216,12 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 15
       },
+     seperate:
+     {
+        padding: 10,
+        fontWeight: "bold",
+        backgroundColor: 'black'
+     },
     
       button: {
         fontFamily: 'monospace',
