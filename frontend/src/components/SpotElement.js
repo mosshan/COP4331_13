@@ -37,16 +37,23 @@ class Spot extends React.Component
 
    setInitMessage = function() {
       let id;
+      let verified;
       try {
          id = JSON.parse(localStorage.user).id;
+         verified = JSON.parse(localStorage.user).isVerified;
       }
       catch(e)
       {
          id = 0;
+         verified = false;
       }
 
       if (id == -1) {
          return (<text>Log In to rate study spots!</text>);
+      }
+      else if (verified == false)
+      {
+         return (<text>Verify your Email to rate a spot!</text>);
       }
       else {
          return (<text>Click the stars to rate a study spot!</text>);
@@ -61,7 +68,17 @@ class Spot extends React.Component
          this.setState({ratingMessage:<text>Rating Submitted!</text>})   
       }
       else if (this.state.disabled) {
-         this.setState({ratingMessage:<text>Log In to rate study spots!</text>})   
+         let id;
+         try {
+            id = JSON.parse(localStorage.user).id;
+         }
+         catch {
+            id = -1;
+         }
+         if (id <= 0)
+            this.setState({ratingMessage:<text>Log In to rate study spots!</text>})   
+         else 
+            this.setState({ratingMessage:<text>Verify your Email to rate a spot!</text>})  
       }
       else {
          this.setState({ratingMessage:<text>Click the stars to rate a study spot!</text>})
@@ -73,7 +90,8 @@ class Spot extends React.Component
       console.log(localStorage);
       try {
          let id = (JSON.parse(localStorage.user)).id;
-         if (id != -1 && !this.state.rated) {
+         let verified = (JSON.parse(localStorage.user)).isVerified;
+         if (id != -1 && !this.state.rated && verified) {
             this.setState({disabled: false});
          }
          else {
