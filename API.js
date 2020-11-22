@@ -15,9 +15,15 @@ exports.setApp = function ( app, client)
       // incoming: userName, Password, Email, FirstName, LastName
       // outgoing: error
       const { userName, password, email /*firstName, lastName*/ } = req.body;
-    
-      //const newUser = {Card:card,UserId:userId};
-      const newUser = {username:userName, password:password, email:email, /*firstName:firstName, lastName:lastName,*/ isVerified:false};
+      const bcrypt = require('bcrypt');
+      const saltRounds = 10;
+      var hashPassword = null;
+
+      bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
+        hashPassword = hash;
+      });
+
+      const newUser = {username:userName, password:hashPassword, email:email, /*firstName:firstName, lastName:lastName,*/ isVerified:false};
       var error = '';
       try
       {
@@ -47,28 +53,38 @@ exports.setApp = function ( app, client)
     {
         // incoming: login, password
         // outgoing: id, firstName, lastName, error
+      const bcrypt = require('bcrypt');
+      const { login, password } = req.body;
 
         
 
-        var error = '';
+      var error = '';
+      var id = -1;
+      var fn = '';
+      var ln = '';
+      var username = '';
+      var isVerified = false;
 
-        const { login, password } = req.body;
-
+      try{
         const db = client.db();
-        const results = await db.collection('Users').find({username:login,password:password}).toArray();
-        
+        const results = await db.collection('Users').find({username:login}).toArray();
 
-        var id = -1;
-        var fn = '';
-        var ln = '';
-        var username = '';
-
-        if( results.length > 0 )
-        {
-            id = results[0]._id;
-            //fn = results[0].FirstName;
-            //ln = results[0].LastName;
-            username = results[0].username
+        if (results.length > 0){
+          var hash = results[0].password;
+          bcrypt.compare(password, hash, function(err, result) {
+            if (result){
+              id = results[0]._id;
+              username = results[0].username;
+              isVerified = results[0].isVerified;
+            } else {
+              error = "invalid username or password";
+            }
+          });
+        }else {
+          error = "invalid username or password";
+        }
+        }catch (e){
+          error = e.toString;
         }
 
         var ret = { id:id, /*firstName: fn, lastName: ln,*/ username:username, error:''};
