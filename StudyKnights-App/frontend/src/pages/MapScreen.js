@@ -348,6 +348,7 @@ export default class Map extends Component {
     },
     spotList: [{_id:"-1", spot_id:"-1", room: "-1", numRatings: -1, spot_rating: -1, place_id:-1}],	
     noSpots:true,
+    loading:true,
   };	
   
   
@@ -369,21 +370,22 @@ export default class Map extends Component {
               .then(res => {
                 if (res.results.length <= 0)
                 {
-                  this.setState({ noSpots: true});
+                  this.setState({ noSpots: true,
+                                  loading:false,});
+                  alert("loading is " + this.state.loading);
                   return null;
                 }
                 let spots = [];
                 res.results.forEach(element => {
                     spots.push(element);
                 });
-    
-                if(this._isMounted)
-                {
+
                   this.setState({spotList: spots,
-                                  noSpots: false,});
+                                  noSpots: false,
+                                  loading:false,});
+                if(!this.state.loading)
+                {return spots;
                 }
-                
-                return spots;
               })
               .catch(error => 
                 {
@@ -411,6 +413,7 @@ export default class Map extends Component {
       chosenMarker: -1,
       mapHeight: Dimensions.get('window').height - 150,
       noSpots: true,
+      loading:true,
     });
 
   }
@@ -489,33 +492,43 @@ export default class Map extends Component {
                 </View>
 
               </View>
-            {
-              !this.state.noSpots?
+            {this.state.loading?
               [
-              <View>
-                <Text style={styles.info}> Click a Spot to View Rating</Text>  
-              <View style = {styles.item}> 
-                <FlatList
-                  data={this.state.spotList}
-                  renderItem={({ item }) => (
-                      <TouchableWithoutFeedback onPress={ () => this.navigateToSpot(item, uID, this.state.markers[this.state.chosenMarker].title)}>
-                        <Text style={styles.spotRoom}>{item.room}</Text>
-                      </TouchableWithoutFeedback>
-                     )}
-                  contentContainerStyle={{ paddingBottom: 550}}
-                  ItemSeparatorComponent = { this.FlatListItemSeparator }
-                  keyExtractor={item => item.spot_id.toString()}
-                /> 
-                <Text style = {styles.bottomSpace}> </Text>
-                <Text>  </Text>
-              </View> 
-              </View>
+                <View>
+                  <Text style={styles.spotRoom}>Loading</Text>
+                </View>
               ]
               :
-              [
-                <View style = {styles.item}>
-                    <Text style={styles.spotRoom}>No Spots</Text>
-                </View> 
+              [<View>
+                {!this.state.loading && !this.state.noSpots ?
+                  [
+                  <View>
+                    <Text style={styles.info}> Click a Spot to View Rating</Text>  
+                  <View style = {styles.item}> 
+                    <FlatList
+                      data={this.state.spotList}
+                      renderItem={({ item }) => (
+                          <TouchableWithoutFeedback onPress={ () => this.navigateToSpot(item, uID, this.state.markers[this.state.chosenMarker].title)}>
+                            <Text style={styles.spotRoom}>{item.room}</Text>
+                          </TouchableWithoutFeedback>
+                        )}
+                      contentContainerStyle={{ paddingBottom: 550}}
+                      ItemSeparatorComponent = { this.FlatListItemSeparator }
+                      keyExtractor={item => item.spot_id.toString()}
+                    /> 
+                    <Text style = {styles.bottomSpace}> </Text>
+                    <Text>  </Text>
+                  </View> 
+                  </View>
+                  ]
+                  :
+                  [
+                    <View style = {styles.item}>
+                        <Text style={styles.spotRoom}>No Spots</Text>
+                    </View> 
+                  ]
+                }
+              </View>
               ]
             }
             </View>
