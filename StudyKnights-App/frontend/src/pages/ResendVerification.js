@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {ImageBackground, StyleSheet, View, Text, TouchableOpacity, TextInput} from 'react-native';
-import SignUpBackground from 'C:\\Users\\domin\\Desktop\\code\\StudyKnights\\SignUpBack.png';
+import SignUpBackground from '../../assets/SignUpBack.png';
 
 
 export default class resendVerification extends Component
