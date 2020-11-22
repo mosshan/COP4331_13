@@ -17,36 +17,32 @@ exports.setApp = function ( app, client)
       const { userName, password, email /*firstName, lastName*/ } = req.body;
       const bcrypt = require('bcrypt');
       const saltRounds = 10;
-      var hashPassword = null;
 
-      bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
-        hashPassword = hash;
-      });
+      bcrypt.hash(password, saltRounds, async function(err, hash) {
+        const newUser = {username:userName, password:hash, email:email, /*firstName:firstName, lastName:lastName,*/ isVerified:false};
+        var error = '';
+        try
+        {
+          const db = client.db();
+          const results = await db.collection('Users').find({username:userName}).toArray();
 
-      const newUser = {username:userName, password:hashPassword, email:email, /*firstName:firstName, lastName:lastName,*/ isVerified:false};
-      var error = '';
-      try
-      {
-        const db = client.db();
-        const results = await db.collection('Users').find({username:userName}).toArray();
-
-        if (results.length > 0){
-          error = "Username already taken.";
-        } else {
-          const result = db.collection('Users').insertOne(newUser);
-          const user = {username:userName, email:email};
-          sendVerificationEmail(user);
+          if (results.length > 0){
+            error = "Username already taken.";
+          } else {
+            const result = db.collection('Users').insertOne(newUser);
+            const user = {username:userName, email:email};
+            sendVerificationEmail(user);
+          }
         }
-      }
-      catch(e)
-      {
-        error = e.toString();
-      }
-    
+        catch(e)
+        {
+          error = e.toString();
+        }
+
+        var ret = { error: error };
+        res.status(200).json(ret);
+      });
       
-    
-      var ret = { error: error };
-      res.status(200).json(ret);
     });
     
     app.post('/api/login', async (req, res, next) => 
@@ -71,15 +67,15 @@ exports.setApp = function ( app, client)
 
         if (results.length > 0){
           var hash = results[0].password;
-          bcrypt.compare(password, hash, function(err, result) {
-            if (result){
-              id = results[0]._id;
-              username = results[0].username;
-              isVerified = results[0].isVerified;
-            } else {
-              error = "invalid username or password";
-            }
-          });
+          const match = await bcrypt.compare(password, hash);
+          if (match){
+            id = results[0]._id;
+            username = results[0].username;
+            isVerified = results[0].isVerified;
+          } else {
+            error = "invalid username or password";
+          }
+
         }else {
           error = "invalid username or password";
         }
@@ -87,7 +83,7 @@ exports.setApp = function ( app, client)
           error = e.toString;
         }
 
-        var ret = { id:id, /*firstName: fn, lastName: ln,*/ username:username, error:''};
+        var ret = { id:id, /*firstName: fn, lastName: ln,*/ username:username, isVerified:isVerified, error:error};
         res.status(200).json(ret);
     });
 
