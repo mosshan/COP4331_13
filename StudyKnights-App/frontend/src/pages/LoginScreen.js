@@ -85,7 +85,7 @@ export default class LoginScreen extends Component
              })
              .then(response => response.json())
              .then(responseJSON => {
-             alert(responseJSON.id);
+             //alert(responseJSON.id);
 
              if(responseJSON.id <= 0)
              {
@@ -94,7 +94,7 @@ export default class LoginScreen extends Component
              else
              {
                this.save();
-               this.props.navigation.navigate('Map', {userID: JSON.stringify(responseJSON.id)} );
+               this.props.navigation.navigate('Map', {userID: responseJSON.id} );
              }
 
           })
