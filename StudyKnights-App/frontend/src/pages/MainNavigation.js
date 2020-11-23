@@ -8,13 +8,15 @@ import LoginScreen from '../pages/LoginScreen';
 import MapScreen from '../pages/MapScreen';
 import SpotScreen from '../pages/SpotScreen';
 import ForgotPassword from '../pages/ForgotPassword';
+import HomeScreen from '../pages/HomeScreen';
 
 const Stack = createStackNavigator();
 
 function MainNavigation() {
   return (
     <NavigationContainer>
-        <Stack.Navigator initialRouteName="Map">
+        <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Map" component={MapScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
