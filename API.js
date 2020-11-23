@@ -234,14 +234,17 @@ exports.setApp = function ( app, client)
     {
       db = client.db();
       jwt = require('jsonwebtoken');
+      bcrypt = require('bcrypt');
+
       var error = '';
       const {token, password} = req.body
       const EMAIL_KEY = process.env.EMAIL_KEY;
+      const hash = await bcrypt.hash(password, 10);
 
       var results = null;
       try{
         const {username, email} = jwt.verify(token, EMAIL_KEY)
-        await db.collection('Users').updateOne({username:username, email:email},{$set:{password:password}});
+        await db.collection('Users').updateOne({username:username, email:email},{$set:{password:hash}});
       } catch (e){
         error = e.toString();
       }
