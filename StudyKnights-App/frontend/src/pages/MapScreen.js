@@ -468,7 +468,7 @@ export default class Map extends Component {
             :
             [
               <View>
-                 <Text style={styles.noneChosen} >Click on a Pin to View Study Spots</Text> 
+                 <Text style={styles.noneChosen} >Click on a Pin to View Study Spot</Text> 
               </View>
             ]
           }
@@ -517,7 +517,7 @@ export default class Map extends Component {
                     )}
                   contentContainerStyle={{ paddingBottom: 550}}
                   ItemSeparatorComponent = { this.FlatListItemSeparator }
-                  keyExtractor={item => item.spot_id.toString()}
+                  keyExtractor={(item) => item.spot_id.toString()}
                 /> 
                 <Text style = {styles.bottomSpace}> </Text>
                 <Text>  </Text>
@@ -617,7 +617,7 @@ export default class Map extends Component {
                             )}
                           contentContainerStyle={{ paddingBottom: 550}}
                           ItemSeparatorComponent = { this.FlatListItemSeparator }
-                          keyExtractor={item => item.spot_id.toString()}
+                          keyExtractor={item => item.room.toString()}
                         /> 
                         <Text style = {styles.bottomSpace}> </Text>
                         <Text>  </Text>
