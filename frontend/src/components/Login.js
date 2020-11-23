@@ -43,7 +43,7 @@ function Login()
             }
             else
             {
-                var user = {id:res.id, username:res.username, firstName:res.firstName, lastName:res.lastName}
+                var user = {id:res.id, username:res.username, firstName:res.firstName, lastName:res.lastName, isVerified:res.isVerified}
                 localStorage.setItem('user', JSON.stringify(user));
                 setMessage('');
                 window.location.href = '/';

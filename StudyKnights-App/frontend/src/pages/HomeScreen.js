@@ -1,65 +1,84 @@
 // Homescreen.js
 import React, { Component } from 'react';
-import {SafeAreaView, StyleSheet, Dimensions, View, ScrollView} from 'react-native';
-import image from '../../assets/ucfMap.png';
-import ImageMapper from 'react-native-image-mapper';
-import ImageViewer from 'react-native-image-zoom-viewer';
+import {StyleSheet, View, ImageBackground, Text, TouchableOpacity} from 'react-native';
+import SignUpBackground from '../../assets/SignUpBack.png';
 
-const imageSource = require('../../assets/ucfMap.png');
-const MAPPING = [
-  {
-    id: '1',
-    name: 'Student Union',
-    shape: 'rectangle',
-    width: 30,
-    height: 10,
-    x1: 180,
-    y1: 155,
-    prefill: 'red',
-    fill: 'blue'
-  },
-]
+
 
 
 export default class Home extends Component {
   render() {
     return (
-      <View>
-         <ImageMapper
-        imgHeight={422}
-        imgWidth={328}
-        imgSource={imageSource}
-        imgMap={MAPPING}
-        onPress={(item, idx, event) => this.onAnyAreaPress(item, idx, event)}
-        />
-     </View>
+      <View style={styles.container}>
+        <ImageBackground source={SignUpBackground} style ={styles.image}>
+          <Text style = {styles.top} >Welcome To Study Knights!</Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <TouchableOpacity
+                           style={{
+                             borderRadius: 40,
+                             borderColor: '#FF000000',
+                             borderWidth: 10,
+                           }}
+                           onPress={
+                           () => {this.props.navigation.navigate('Map')}
+                          }>
+                           <Text style = {styles.text}>
+                             View Map
+                           </Text>
+          </TouchableOpacity>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+        </ImageBackground>
+      </View>
 
-      
     );
   }
 };
 
 const styles = StyleSheet.create({
-  mapStyle: {
+  container: {
+   flex: 1,
+  },
+  image: {
     flex: 1,
-    flexDirection: 'column-reverse',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
+    resizeMode: "cover",
+    justifyContent: "center"
   },
-  description: {
-    //margin: 15,
-    fontSize: 15,
+  text: {
     fontFamily: 'monospace',
-    padding: 5,
-    color: 'white',
-    backgroundColor: 'rgba(52, 52, 52, 1.0)'
+    color: 'black',
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 30,
+    padding: 10,
+    fontWeight: "bold",
+    backgroundColor: 'rgba(255, 201, 4, .9)',
+    margin: 15,
   },
-  rating: {
-    //margin: 15,
-    fontSize: 15,
+  top: {
+
     fontFamily: 'monospace',
-    padding: 5,
-    color: 'white',
-    backgroundColor: 'rgba(52, 52, 52, 1.0)'
+    color: 'black',
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 20,
+    padding: 12,
+    fontWeight: "bold",
+    backgroundColor: 'rgba(255, 201, 4, .9)'
   },
+  
+
 });

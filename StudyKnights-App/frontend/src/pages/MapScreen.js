@@ -1,8 +1,8 @@
 // Mapscreen.js	
 import React, { Component } from 'react';	
-import {View, StyleSheet, Text , Dimensions, TouchableOpacity, TouchableWithoutFeedback, FlatList, ScrollView} from 'react-native';	
+import {View, StyleSheet, Text , Dimensions, TouchableOpacity, TouchableWithoutFeedback, FlatList} from 'react-native';	
 import MapView, {Callout, Marker}  from "react-native-maps";	
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 export default class Map extends Component {	
@@ -372,7 +372,6 @@ export default class Map extends Component {
                 {
                   this.setState({ noSpots: true,
                                   loading:false,});
-                  alert("loading is " + this.state.loading);
                   return null;
                 }
                 let spots = [];
@@ -435,6 +434,110 @@ export default class Map extends Component {
     );
   }
 
+  UserLoggedIn = () => {
+    return (
+      <View style={styles.noneChosenContainer}>
+                <TouchableOpacity
+                  onPress={() => {this.props.navigation.navigate('Login')}}>
+                  <Text style = {styles.button}>
+                    Login
+                  </Text>
+                </TouchableOpacity>
+
+                <Text>   </Text>
+                <TouchableOpacity
+                  onPress={() => {this.props.navigation.navigate('SignUp')}}>
+                  <Text style = {styles.button}>
+                    Register
+                  </Text>
+                </TouchableOpacity>
+                <Text>   </Text>
+                <Text></Text>
+                <Text style={styles.noneChosen} >Click on a Pin to View Study Spots</Text> 
+      </View>
+    )
+  }
+
+  NoMarkerChosen(uID)
+  {
+    return(
+      <View>
+          {(uID < 0 )?
+            [ this.UserLoggedIn()
+              ]
+            :
+            [
+              <View>
+                 <Text style={styles.noneChosen} >Click on a Pin to View Study Spots</Text> 
+              </View>
+            ]
+          }
+      </View>
+    )
+  }
+
+  markerChosen(uID)
+  {
+    return(
+      <View>
+          <View style = {styles.ratingContainer}>
+
+            <View style = {styles.button}>
+              <TouchableOpacity
+                onPress={() => {this.closeRating()}}>
+                <Text> x </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View>
+              <Text style={styles.description}>{this.state.markers[this.state.chosenMarker].title} Study Spots</Text>
+            </View>
+
+          </View>
+
+        {this.state.loading?
+          [
+            <View>
+              <Text style = {styles.item}>Loading</Text>
+            </View>
+          ]
+          :
+          [<View>
+            {!this.state.loading && !this.state.noSpots ?
+              [
+              <View>
+                <Text style={styles.info}> Click a Spot to View Rating</Text>  
+              <View style = {styles.item}> 
+                <FlatList
+                  data={this.state.spotList}
+                  renderItem={({ item }) => (
+                      <TouchableWithoutFeedback onPress={ () => this.navigateToSpot(item, uID, this.state.markers[this.state.chosenMarker].title)}>
+                        <Text style={styles.spotRoom}>{item.room}</Text>
+                      </TouchableWithoutFeedback>
+                    )}
+                  contentContainerStyle={{ paddingBottom: 550}}
+                  ItemSeparatorComponent = { this.FlatListItemSeparator }
+                  keyExtractor={item => item.spot_id.toString()}
+                /> 
+                <Text style = {styles.bottomSpace}> </Text>
+                <Text>  </Text>
+              </View> 
+              </View>
+              ]
+              :
+              [
+                <View style = {styles.item}>
+                    <Text style={styles.spotRoom}>No Spots</Text>
+                </View> 
+              ]
+            }
+          </View>
+          ]
+        }
+      </View>
+    )
+  }
+
   render() {	
     let uID;
     if(this.props.route.params === undefined )
@@ -462,7 +565,7 @@ export default class Map extends Component {
             return (	
                  <Marker key={index} coordinate={marker.coordinate} title={marker.title}	
                   description={marker.description} onPress={() => {this.showRating(index)}} >	
-                  <Callout	
+                  <Callout	key={209}
                       tooltip={true}	
                     >	
                       <Text style={styles.description} >	
@@ -474,105 +577,99 @@ export default class Map extends Component {
             );	
           })}	
         </MapView>	
-
         {(this.state.chosenMarker > -1 )?
           [ 
-            <View>
-              <View style = {styles.ratingContainer}>
+            <View key={432}>
+                  <View style = {styles.ratingContainer}>
 
-                <View style = {styles.button}>
-                  <TouchableOpacity
-                    onPress={() => {this.closeRating()}}>
-                    <Text> x </Text>
-                  </TouchableOpacity>
-                </View>
+                    <View style = {styles.button}>
+                      <TouchableOpacity
+                        onPress={() => {this.closeRating()}}>
+                        <Text> x </Text>
+                      </TouchableOpacity>
+                    </View>
 
-                <View>
-                  <Text style={styles.description}>{this.state.markers[this.state.chosenMarker].title} Study Spots</Text>
-                </View>
+                    <View>
+                      <Text style={styles.description}>{this.state.markers[this.state.chosenMarker].title} Study Spots</Text>
+                    </View>
 
-              </View>
-            {this.state.loading?
-              [
-                <View>
-                  <Text style={styles.spotRoom}>Loading</Text>
-                </View>
-              ]
-              :
-              [<View>
-                {!this.state.loading && !this.state.noSpots ?
-                  [
-                  <View>
-                    <Text style={styles.info}> Click a Spot to View Rating</Text>  
-                  <View style = {styles.item}> 
-                    <FlatList
-                      data={this.state.spotList}
-                      renderItem={({ item }) => (
-                          <TouchableWithoutFeedback onPress={ () => this.navigateToSpot(item, uID, this.state.markers[this.state.chosenMarker].title)}>
-                            <Text style={styles.spotRoom}>{item.room}</Text>
-                          </TouchableWithoutFeedback>
-                        )}
-                      contentContainerStyle={{ paddingBottom: 550}}
-                      ItemSeparatorComponent = { this.FlatListItemSeparator }
-                      keyExtractor={item => item.spot_id.toString()}
-                    /> 
-                    <Text style = {styles.bottomSpace}> </Text>
-                    <Text>  </Text>
-                  </View> 
                   </View>
+
+                {this.state.loading?
+                  [
+                    <View key={0}>
+                      <Text style = {styles.item}>Loading</Text>
+                    </View>
                   ]
                   :
-                  [
-                    <View style = {styles.item}>
-                        <Text style={styles.spotRoom}>No Spots</Text>
-                    </View> 
+                  [<View key={1}>
+                    {!this.state.loading && !this.state.noSpots ?
+                      [
+                      <View key={0}>
+                        <Text style={styles.info}> Click a Spot to View Rating</Text>  
+                      <View style = {styles.item}> 
+                        <FlatList
+                          data={this.state.spotList}
+                          renderItem={({ item }) => (
+                              <TouchableWithoutFeedback onPress={ () => this.navigateToSpot(item, uID, this.state.markers[this.state.chosenMarker].title)}>
+                                <Text style={styles.spotRoom}>{item.room}</Text>
+                              </TouchableWithoutFeedback>
+                            )}
+                          contentContainerStyle={{ paddingBottom: 550}}
+                          ItemSeparatorComponent = { this.FlatListItemSeparator }
+                          keyExtractor={item => item.spot_id.toString()}
+                        /> 
+                        <Text style = {styles.bottomSpace}> </Text>
+                        <Text>  </Text>
+                      </View> 
+                      </View>
+                      ]
+                      :
+                      [
+                        <View style = {styles.item} key={1}>
+                            <Text style={styles.spotRoom}>No Spots</Text>
+                        </View> 
+                      ]
+                    }
+                  </View>
                   ]
                 }
               </View>
-              ]
-            }
-            </View>
-
-
           ]
         : 
         [
-          <View>
-          {(uID < 0 )?
-            [ <View style={styles.noneChosenContainer}>
-                <TouchableOpacity
-                  onPress={() => {this.props.navigation.navigate('Login')}}>
-                  <Text style = {styles.button}>
-                    Login
-                  </Text>
-                </TouchableOpacity>
-
-                <Text>   </Text>
-                <TouchableOpacity
-                  onPress={() => {this.props.navigation.navigate('SignUp')}}>
-                  <Text style = {styles.button}>
-                    Register
-                  </Text>
-                </TouchableOpacity>
-                <Text>   </Text>
-                <Text></Text>
-                <Text style={styles.noneChosen} >Click on a Pin to View Study Spots</Text> 
-              </View>
-              ]
-            :
-            [
-              <View>
-                 <Text style={styles.noneChosen} >Click on a Pin to View Study Spots</Text> 
-              </View>
-            ]
-          }
+          <View key={430}>
+              {(uID < 0 )?
+                [ <View style={styles.noneChosenContainer} key={1}>
+                      <TouchableOpacity
+                        onPress={() => {this.props.navigation.navigate('Login')}}>
+                        <Text style = {styles.button}>
+                          Login
+                        </Text>
+                      </TouchableOpacity>
+      
+                      <Text>   </Text>
+                      <TouchableOpacity
+                        onPress={() => {this.props.navigation.navigate('SignUp')}}>
+                        <Text style = {styles.button}>
+                          Register
+                        </Text>
+                      </TouchableOpacity>
+                      <Text>   </Text>
+                      <Text></Text>
+                      <Text style={styles.noneChosen} >Click on a Pin to View Study Spots</Text> 
+                  </View>
+                  ]
+                :
+                [
+                  <View key={2}>
+                    <Text style={styles.noneChosen} >Click on a Pin to View Study Spots</Text> 
+                  </View>
+                ]
+              }
           </View>
         ]}	
-
       </View>
- 
-
-
     );	
   }	
 };	
@@ -614,14 +711,11 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: 'rgba(255, 201, 4, .9)',
-    //padding: 10,
     marginVertical: 20,
     marginHorizontal: 16,
     fontSize: 25,	
     fontFamily: 'monospace',
     color: 'white',
-   // height: 500,
-    //flex: 2,
   },
   spotRoom: {	
     alignSelf:'center',

@@ -64,10 +64,8 @@ export default class SpotScreen extends Component
   async rate()
   {
     var obj = {spot_id: this.state.spotInfo._id, user_id: this.state.uID, rating: this.state.rating};
-    alert(obj);
     var js = JSON.stringify(obj);
 
-    alert(js);
              fetch('https://study-knights.herokuapp.com/api/rate', {
                method:'POST',
                headers:{

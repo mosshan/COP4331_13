@@ -16,7 +16,7 @@ export default class LoginScreen extends Component
       validPassword: false,
     }
 
-    constructor(props)
+    constructor(props)                                              
     {
       super(props);
       this.load();
