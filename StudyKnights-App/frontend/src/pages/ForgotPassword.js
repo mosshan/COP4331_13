@@ -40,15 +40,16 @@ export default class ForgotPassword extends Component
            body:js,
          })
          .then(response => response.json())
-         .then(responseJSON =>
+         .then(responseON =>
          {
 
-         if(responseJSON.error == 'username or email not found')
+         if(responseON.error == 'username or email not found')
          {
             this.setState( {errorText: 'Invalid username and email combination.'} );
          }
          else
          {
+         
            this.setState({ errorText: 'A password reset email has been sent.'} );
            this.props.navigation.navigate('Login');
          }
