@@ -40,9 +40,9 @@ export default class resendVerification extends Component
            body:js,
          })
          .then(response => response.json())
-         .then(responseJSON =>
+         .then(responseJS =>
          {
-            if(responseJSON.error == 'username or email not found')
+            if(responseJS.error == 'username or email not found')
             {
                this.setState( {errorText: 'Invalid username and email combination.'} );
             }
