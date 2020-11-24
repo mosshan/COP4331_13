@@ -37,12 +37,12 @@ export default class LoginScreen extends Component
       this.state.validPassword = !(this.state.password === '');
     };
 
-   async save()
+   async save(id)
    {
       try
       {
-         this.setState({ token: responseJSON.id})
-         await AsyncStorage.setItem('token', responseJSON.id);
+         this.setState({ token: id})
+         await AsyncStorage.setItem('token', id);
       }
       catch (e)
       {
@@ -84,17 +84,17 @@ export default class LoginScreen extends Component
                body:js,
              })
              .then(response => response.json())
-             .then(responseJSON => {
+             .then(responseJSOn => {
              //alert(responseJSON.id);
 
-             if(responseJSON.id <= 0)
+             if(responseJSOn.id <= 0)
              {
               this.setState({ errorText: 'Invalid username and password combination.' });
              }
              else
              {
-               this.save();
-               this.props.navigation.navigate('Map', {userID: responseJSON.id} );
+               this.save(responseJSOn.id);
+               this.props.navigation.navigate('Map', {userID: responseJSOn.id} );
              }
 
           })
