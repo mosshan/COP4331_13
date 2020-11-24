@@ -662,7 +662,13 @@ export default class Map extends Component {
                   ]
                 :
                 [
-                  <View key={2}>
+                  <View key={2} style={styles.noneChosenContainer}>
+                    <TouchableOpacity
+                        onPress={() => {this.props.navigation.navigate('Home')}}>
+                        <Text style = {styles.button}>
+                          Logout
+                        </Text>
+                      </TouchableOpacity>
                     <Text style={styles.noneChosen} >Click on a Pin to View Study Spots</Text> 
                   </View>
                 ]
