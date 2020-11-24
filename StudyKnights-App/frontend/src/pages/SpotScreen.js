@@ -75,13 +75,13 @@ export default class SpotScreen extends Component
                body:js,
              })
              .then(response => response.json())
-             .then(responseJSON => {
-                 if(responseJSON.error !== ''){
+             .then(responseJ => {
+                 if(responseJ.error !== ''){
                     console.error(error);
                  }
                  else{
                      this.setState({responseSubmitted: true,
-                                    avgRating: responseJSON.average,
+                                    avgRating: responseJ.average,
                     });
 
 
